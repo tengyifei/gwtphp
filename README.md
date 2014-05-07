@@ -2,6 +2,7 @@ GWTPHP
 ======
 
 Huge credits go to Rafal M.Malinowski, the author of the original GWTPHP library for GWT 1.5
+
 Project site: https://code.google.com/p/gwtphp/
 
 ## Introduction ##
@@ -18,11 +19,14 @@ Include the Java source in your project. Then, in the module XML file, add this 
 <inherits name="com.tyf.gwtphp.GwtPhp" />
 ```
 Compile the GWT project. A linker will automatically analyse any class implementing RemoteService and discover any referenced classes to generate the class maps needed by the PHP library.
+
 The generated class maps are contained in a folder named gwtphp-maps, which can be found in the same directory as the JavaScript files.
+
 Next, write server-side implementations using the stub classes. The class name of the implementation has to be [class name]Impl. The file containing the implementation needs to be located in the same directory as the stub file, and its file name needs to be [class name]Impl.class.php. This follows the naming conventions of GAE front-end Java servlets.
 
 ## Example ##
 Suppose we want to convert the GWT example project contained in stock GWT installation, GreetingService, to operate with PHP.
+
 First include the custom linkers into project source, then edit the module XML to add the inherits statement.
 ```XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -44,6 +48,7 @@ First include the custom linkers into project source, then edit the module XML t
 </module>
 ```
 Compile the project. The gwtphp-maps folder can be found in war/example. Copy the contents in "php" folder in this repository to the war/example directory as well.
+
 The file "rpc.php" is the gateway of all RPC POST requests. In the GWT example project, the default RemoteServiceRelativePath is "greet". The two names need to be identical for RPC to function. Since most web servers are configured to only execute .php files as PHP code, we may change both names to a PHP file e.g. "greet.php".
 ```Java
 /**
