@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+    @author VxR <vxr@vxr.it>
+    @version $Revision: 1.2 $
+    @since 0.3
+-->
+<log4php:configuration xmlns:log4php="http://www.vxr.it/log4php/" threshold="trace" debug="false">
+    <!--<appender name="default" class="LoggerAppenderEcho">
+        <layout class="LoggerLayoutTTCC">
+            <param name="threadPrinting" value="true" />
+            <param name="categoryPrefixing" value="true" />
+            <param name="contextPrinting" value="true" />
+            <param name="microSecondsPrinting" value="true" />
+            <param name="dateFormat" value="[%c]" />
+        </layout>
+    </appender>
+    
+    <appender name="html" class="LoggerAppenderEcho">
+        <layout class="LoggerLayoutHtml">
+            <param name="locationInfo" value="true" />
+            <param name="title" value="LoggerAppenderEcho Test" />
+        </layout>
+    </appender>
+
+
+    <appender name="file" class="LoggerAppenderFile">
+        <param name="file" value="log.html" />
+        <param name="append" value="false" />
+        <layout class="LoggerLayoutHtml">
+            <param name="locationInfo" value="true" />
+            <param name="title" value="LoggerAppenderEcho Test" />
+        </layout>       
+    </appender>
+    
+    <root>
+        <level value="trace" />      
+        <appender_ref ref="file" />
+    </root>-->
+</log4php:configuration>
