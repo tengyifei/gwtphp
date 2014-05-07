@@ -95,3 +95,4 @@ class GreetingServiceImpl {
 ?>
 ```
 Now the site is ready!
+![Working demo](http://i58.tinypic.com/kcccir.png)
