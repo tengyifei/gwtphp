@@ -66,11 +66,11 @@ example/
           client/
             GreetingService.class.php
             GreetingService.gwtphpmap.inc.php
-log4php/
+  log4php/
+  log4php.xml
+  greet.php
 WEB-INF/
 Example.html
-greet.php
-log4php.xml
 ```
 Next, create GreetingServiceImpl.class.php next to GreetingService.class.php, and write the server-side implementation:
 ```PHP
@@ -92,5 +92,6 @@ class GreetingServiceImpl {
 		return htmlspecialchars($html);
 	}
 }
+?>
 ```
 Now the site is ready!
