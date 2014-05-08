@@ -1,4 +1,4 @@
-<?PHP
+<?php
 /*
  * GWTPHP is a port to PHP of the GWT RPC package.
  * 
@@ -23,29 +23,10 @@
  * the License.
  */
 
-/**
- * @package gwtphp.maps.com.google.gwt.user.client.rpc
- */
-class IncompatibleRemoteServiceException extends Exception implements IsSerializable {
-	
-	/**
-	 *
-	 * @var Exception
-	 */
-	private $couse;
-	
-	const DEFAULT_MESSAGE = "This application is out of "
-      . "date, please click the refresh button on your browser.";
-	
-	/**
-	 *
-	 * @param string $message
-	 * @param Exception $couse
-	 */
-	public function __construct($message,Exception $couse = null) {		
-		parent::__construct(self::CONSTANT . "(" . $message . ")",0);
-		$this->couse = $couse;
-	}
-}
+class RuntimeException extends SerializableException {
 
-?>
+	public __construct($message = null, $cause = null){
+		parent::__construct($s, $cause);
+	}
+	
+}

@@ -20,8 +20,10 @@
  */
 package com.tyf.gwtphp.rebind;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import com.google.gwt.core.ext.GeneratorContext;
@@ -33,10 +35,9 @@ import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
-import com.google.gwt.user.rebind.rpc.ProxyCreator;
 import com.google.gwt.user.rebind.rpc.ServiceInterfaceProxyGenerator;
-import com.tyf.gwtphp.linker.RPCFunction;
 import com.tyf.gwtphp.linker.RPCField;
+import com.tyf.gwtphp.linker.RPCFunction;
 import com.tyf.gwtphp.linker.RPCObjectArtifact;
 import com.tyf.gwtphp.linker.RPCServiceArtifact;
 
@@ -45,35 +46,11 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 	private static final Set<JType> customObjectSet = new HashSet<JType>();
 	private static final Set<String> generatedClasses = new HashSet<String>();
 
-	public RebindResult generateIncrementallyOrig(TreeLogger logger, GeneratorContext ctx,
-			String requestedClass) throws UnableToCompleteException {
-
-		TypeOracle typeOracle = ctx.getTypeOracle();
-		assert (typeOracle != null);
-
-		JClassType remoteService = typeOracle.findType(requestedClass);
-		if (remoteService == null) {
-			logger.log(TreeLogger.ERROR, "Unable to find metadata for type '" + requestedClass
-					+ "'", null);
-			throw new UnableToCompleteException();
-		}
-
-		if (remoteService.isInterface() == null) {
-			logger.log(TreeLogger.ERROR, remoteService.getQualifiedSourceName()
-					+ " is not an interface", null);
-			throw new UnableToCompleteException();
-		}
-
-		ProxyCreator proxyCreator = createProxyCreator(remoteService);
-
-		TreeLogger proxyLogger = logger.branch(
-				TreeLogger.DEBUG,
-				"Generating client proxy for remote service interface '"
-						+ remoteService.getQualifiedSourceName() + "'", null);
-
-		return proxyCreator.create(proxyLogger, ctx);
-	}
-
+	/**
+	 * This method overrides the default RemoteService interface proxy generator, 
+	 * gathers type information and passes it to the linker, in addition to
+	 * invoking the default generator.
+	 */
 	@Override
 	public RebindResult generateIncrementally(TreeLogger logger, GeneratorContext ctx,
 			String requestedClass) throws UnableToCompleteException {
@@ -90,7 +67,7 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 			qualifiedClassName = packageName + "." + className;
 			// prevent rediscovery
 			if (generatedClasses.contains(qualifiedClassName))
-				generateIncrementallyOrig(logger, ctx, requestedClass);
+				return super.generateIncrementally(logger, ctx, requestedClass);
 
 			RPCServiceArtifact artifact = new RPCServiceArtifact(
 					classType.getQualifiedSourceName(), classType.getSimpleSourceName());
@@ -107,22 +84,26 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 				JType[] paramTypes = method.getParameterTypes();
 				String[] params = new String[paramTypes.length];
 				String[] paramNames = new String[params.length];
+				JClassType[]exceptionTypes = method.getThrows();
+				String[] exceptions = new String[exceptionTypes.length];
 
 				// getRpcTypeName recursively generates the type name, while
-				// adding all
-				// discovered types to the set, flattening out arrays &
-				// generics, etc.
+				// adding all discovered types to the set, flattening out 
+				// arrays & generics, etc.
 				String returnTypeName = TypeUtil.getPHPRpcTypeName(returnType, discoveredTypes);
 				for (int i = 0; i < params.length; i++) {
 					params[i] = TypeUtil.getPHPRpcTypeName(paramTypes[i], discoveredTypes);
 					paramNames[i] = method.getParameters()[i].getName();
+				}
+				for (int i = 0; i < exceptions.length; i++){
+					exceptions[i] = TypeUtil.getPHPRpcTypeName(exceptionTypes[i], discoveredTypes);
 				}
 
 				// get type signature of the return type
 				String returnTypeCRC = TypeUtil.getCRC(returnType);
 
 				RPCFunction f = new RPCFunction(method.getName(), returnTypeName, returnTypeCRC,
-						params, paramNames, new String[0]);
+						params, paramNames, exceptions);
 
 				artifact.putMethod(method.getName(), f);
 			}
@@ -136,11 +117,11 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 				ctx.commitArtifact(logger, a);
 			}
 		} catch (Exception e) {
-			logger.log(TreeLogger.ERROR, "ERROR", e);
+			logger.log(TreeLogger.ERROR, "ERROR: "+e.getMessage(), e);
 			return null;
 		}
 
-		return generateIncrementallyOrig(logger, ctx, requestedClass);
+		return super.generateIncrementally(logger, ctx, requestedClass);
 	}
 
 	private Collection<? extends RPCObjectArtifact> discoverObjects(JType type)
@@ -165,7 +146,15 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 			}
 			objects.add(object);
 			customObjectSet.add(type);
+			// recursively discover the parent classes. This has to be done after
+			// the current type is added into the customObjectSet
+			if (classType != null){
+				if (classType.getSuperclass() != null){
+					objects.addAll(discoverObjects(classType.getSuperclass()));
+				}
+			}
 		}
+		
 		// recursively discover other custom objects refereced by this object
 		for (JType t : discoveredTypes) {
 			objects.addAll(discoverObjects(t));
@@ -180,10 +169,16 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 	 * @return
 	 */
 	private boolean isCustom(JType returnType) {
+		if (returnType.getQualifiedSourceName().startsWith("java.lang.") && 
+				(returnType.getQualifiedSourceName().toLowerCase().contains("exception") ||
+						returnType.getQualifiedSourceName().toLowerCase().contains("throw")))
+			return true;
 		if (returnType.isPrimitive() != null)
 			return false;
 		// exclude built-in Java classes
 		if (returnType.getQualifiedSourceName().startsWith("java."))
+			return false;
+		if (returnType.getQualifiedSourceName().startsWith("com.google.gwt.user.client.rpc."))
 			return false;
 		return true;
 	}

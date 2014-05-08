@@ -203,7 +203,8 @@ class ServerSerializationStreamWriter extends AbstractSerializationStreamWriter 
 	public function writeLong($fieldValue) {
 		//echo "fieldValue = $fieldValue and is type ".gettype($fieldValue).($fieldValue>0?' PLUS ':' MINUS');
 		class_exists('TypeConversionUtil') || include(GWTPHP_DIR.'/util/TypeConversionUtil.class.php');
-		$this->writeString((string)TypeConversionUtil::dec2hex($fieldValue));
+		//$this->writeString((string)TypeConversionUtil::dec2hex($fieldValue));
+		$this->append(TypeConversionUtil::dectoBase64($fieldValue));
 	}
 	
 	/**

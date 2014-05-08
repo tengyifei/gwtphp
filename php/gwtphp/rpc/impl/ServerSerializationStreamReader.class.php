@@ -351,7 +351,8 @@ final class ServerSerializationStreamReader extends AbstractSerializationStreamR
 	 * @return float
 	 */
 	function readLong() {
-		return TypeConversionUtil::hex2dec ( $this->extract () );
+		//return TypeConversionUtil::hex2dec ( $this->extract () );
+		return TypeConversionUtil::base64toDec ( $this->extract () );
 	}
 	
 	/**

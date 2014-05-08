@@ -38,7 +38,7 @@ class SerializableException extends Exception implements IsSerializable {
 	protected $message;
 	
 	
-	public function __construct($message = null) {		
+	public function __construct($message = null, $cause = null) {		
 		parent::__construct($message,0);
 		$this->message = $message;		
 	}

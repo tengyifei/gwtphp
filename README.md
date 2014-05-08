@@ -3,13 +3,14 @@ GWTPHP
 
 Huge credits go to Rafal M.Malinowski, the author of the original GWTPHP library for GWT 1.5
 
-Project site: https://code.google.com/p/gwtphp/
+His project site: https://code.google.com/p/gwtphp/
 
 ## Introduction ##
 This library gives PHP sites the capability to interface with GWT code via Remote Procedure Call. No change of source code is needed on the GWT side, and minimal effort is required to configure PHP.
 
 ## Changes ##
-* Modify the original GWTPHP library to be fully compatible with GWT 2.5/2.6
+* Modify the original GWTPHP library to be compatible with version 7 of the GWT RPC protocol
+* Implement as many advanced features as possible e.g. Type obfuscation, XSRF protection
 * Use native PHP functions to escape and un-escape Unicode strings, obviating the need for huge character mapping tables and improving performance
 * Custom GWT linker to extract type information instead of manually configuring PHP files.
 
@@ -47,9 +48,7 @@ First include the custom linkers into project source, then edit the module XML t
   <source path='shared'/>
 </module>
 ```
-Compile the project. The gwtphp-maps folder can be found in war/example. Copy the contents in "php" folder in this repository to the war/example directory as well.
-
-The file "rpc.php" is the gateway of all RPC POST requests. In the GWT example project, the default RemoteServiceRelativePath is "greet". The two names need to be identical for RPC to function. Since most web servers are configured to only execute .php files as PHP code, we may change both names to a PHP file e.g. "greet.php".
+The file "rpc.php" (located in folder "php") is the gateway of all RPC POST requests. In the GWT example project, the default RemoteServiceRelativePath is "greet". The two names need to be identical for RPC to function. Since most web servers are configured to only execute .php files as PHP code, we may change both names to a PHP file name e.g. "greet.php".
 ```Java
 /**
  * The client side stub for the RPC service.
@@ -59,6 +58,7 @@ public interface GreetingService extends RemoteService {
   String greetServer(String name) throws IllegalArgumentException;
 }
 ```
+Compile the project. The gwtphp-maps folder can be found in war/example. Copy the contents in "php" folder in this repository to the war/example directory as well.
 
 Directory structure (as of now):
 ```

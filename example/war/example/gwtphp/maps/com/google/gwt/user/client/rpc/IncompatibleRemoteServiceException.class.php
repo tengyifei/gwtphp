@@ -6,7 +6,8 @@
  * <p>Design, strategies and part of the methods documentation are developed by Google Team  </p>
  * 
  * <p>PHP port, extensions and modifications by Rafal M.Malinowski. All rights reserved.<br>
- * For more information, please see {@link http://gwtphp.sourceforge.com/}.</p>
+ * Additional modifications, GWT generators and linkers by Yifei Teng. All rights reserved.<br>
+ * For more information, please see {@link https://github.com/tengyifei/gwtphp}</p>
  * 
  * 
  * <p>Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -31,7 +32,10 @@ class IncompatibleRemoteServiceException extends Exception implements IsSerializ
 	 *
 	 * @var Exception
 	 */
-	private $couse;	
+	private $couse;
+	
+	const DEFAULT_MESSAGE = "This application is out of "
+      . "date, please click the refresh button on your browser.";
 	
 	/**
 	 *
@@ -39,8 +43,8 @@ class IncompatibleRemoteServiceException extends Exception implements IsSerializ
 	 * @param Exception $couse
 	 */
 	public function __construct($message,Exception $couse = null) {		
-		parent::__construct($message,0);
-		$this->couse = $couse;			
+		parent::__construct(self::CONSTANT . "(" . $message . ")",0);
+		$this->couse = $couse;
 	}
 }
 

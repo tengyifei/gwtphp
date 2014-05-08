@@ -1,5 +1,4 @@
 <?php
-
 /*
  * GWTPHP is a port to PHP of the GWT RPC package.
  * 
@@ -7,7 +6,8 @@
  * <p>Design, strategies and part of the methods documentation are developed by Google Team  </p>
  * 
  * <p>PHP port, extensions and modifications by Rafal M.Malinowski. All rights reserved.<br>
- * For more information, please see {@link http://gwtphp.sourceforge.com/}.</p>
+ * Additional modifications, GWT generators and linkers by Yifei Teng. All rights reserved.<br>
+ * For more information, please see {@link https://github.com/tengyifei/gwtphp}</p>
  * 
  * 
  * <p>Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -22,7 +22,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
- 
+
 require_once "Object.class.php";
 
 /**
