@@ -68,13 +68,14 @@ abstract class AbstractClassLoader implements ClassLoader {
 		}
 		foreach ($classPaths as $classPath) {
 			//LoggerManager::getLogger('AbstractClassLoader')->info('Search for class: '.$classPath);
+			//echo $classPath . "\n";
 			if (file_exists($classPath)) {
 				require_once($classPath);
 				return $this->instatineClass($this->getClassSimpleName($className));
 			}
 		}
 		
-		require_once(GWTPHP_DIR.'/exceptions/ClassNotFoundException.class.php');
+		require_once(GWTPHP_DIR.'/maps/java/lang/ClassNotFoundException.class.php');
 		throw new ClassNotFoundException($className);
 		
 	}

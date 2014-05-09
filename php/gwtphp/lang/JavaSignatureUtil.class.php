@@ -149,7 +149,7 @@ class JavaSignatureUtil {
 	 */
 	public static function getSignatureForComponentTypeOfArray($signature) {
 		if (!JavaSignatureUtil::isArray($signature)) {
-			require_once(GWTPHP_DIR.'/exceptions/SignatureParseException.class.php');
+			require_once(GWTPHP_DIR.'/maps/java/lang/SignatureParseException.class.php');
 			throw new SignatureParseException("Not an array signature: " . $signature);
 		}
 		//$second = $signature[1] ;
@@ -175,7 +175,7 @@ class JavaSignatureUtil {
 			return true;
 		}
 		else {
-			require_once(GWTPHP_DIR.'/exceptions/SignatureParseException.class.php');
+			require_once(GWTPHP_DIR.'/maps/java/lang/SignatureParseException.class.php');
 			throw new SignatureParseException("Generic signature parsing error (not equal counts of '<' and '>' : " . $signature);
 		}
 		//return ( strpos($signature,'<') === false ) ? false : true;
@@ -207,7 +207,7 @@ class JavaSignatureUtil {
 		$rPos = strrpos($signature,'>');
 
 		if ($lPos === false ||$rPos === false || !JavaSignatureUtil::isGeneric($signature)) {
-			require_once(GWTPHP_DIR.'/exceptions/SignatureParseException.class.php');
+			require_once(GWTPHP_DIR.'/maps/java/lang/SignatureParseException.class.php');
 			throw new SignatureParseException("Not an generic signature: " . $signature);
 		}
 
@@ -233,7 +233,7 @@ class JavaSignatureUtil {
 		$rPos = strrpos($signature,'>');
 
 		if ($lPos === false ||$rPos === false || !JavaSignatureUtil::isGeneric($signature)) {
-			require_once(GWTPHP_DIR.'/exceptions/SignatureParseException.class.php');
+			require_once(GWTPHP_DIR.'/maps/java/lang/SignatureParseException.class.php');
 			throw new SignatureParseException("Not an generic signature: " . $signature);
 		}
 

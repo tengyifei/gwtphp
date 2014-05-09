@@ -20,10 +20,8 @@
  */
 package com.tyf.gwtphp.rebind;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import com.google.gwt.core.ext.GeneratorContext;
@@ -65,12 +63,13 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 			packageName = classType.getPackage().getName();
 			className = classType.getSimpleSourceName();
 			qualifiedClassName = packageName + "." + className;
-			// prevent rediscovery
+			// prevent re-discovery
 			if (generatedClasses.contains(qualifiedClassName))
 				return super.generateIncrementally(logger, ctx, requestedClass);
 
 			RPCServiceArtifact artifact = new RPCServiceArtifact(
-					classType.getQualifiedSourceName(), classType.getSimpleSourceName());
+					classType.getQualifiedSourceName(), classType.getSimpleSourceName(),
+					getSuperTypeName(classType));
 
 			// discover new custom objects, whose information must be known by
 			// the server
@@ -133,9 +132,10 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 
 		Set<JType> discoveredTypes = new HashSet<JType>();
 		if (isCustom(type)) {
-			RPCObjectArtifact object = new RPCObjectArtifact(type.getQualifiedSourceName(),
-					type.getSimpleSourceName(), TypeUtil.getCRC(type));
+			String parentName = getSuperTypeName(type);
 			JClassType classType;
+			RPCObjectArtifact object = new RPCObjectArtifact(type.getQualifiedSourceName(),
+					type.getSimpleSourceName(), parentName, TypeUtil.getCRC(type));
 			if ((classType = type.isClass()) != null) {
 				for (JField f : classType.getFields()) {
 					String fieldName = f.getName();
@@ -162,6 +162,19 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 		return objects;
 	}
 
+	private String getSuperTypeName(JType type) {
+		JClassType classType1;
+		String parentName = null;
+		if ((classType1 = type.isClass()) != null) {
+			JClassType supertype;
+			if ((supertype = classType1.getSuperclass()) != null){
+				if (isCustom(supertype))
+					parentName = supertype.getQualifiedSourceName();
+			}
+		}
+		return parentName;
+	}
+
 	/**
 	 * Checks if a JType is built-in or user-defined
 	 * 
@@ -169,10 +182,6 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 	 * @return
 	 */
 	private boolean isCustom(JType returnType) {
-		if (returnType.getQualifiedSourceName().startsWith("java.lang.") && 
-				(returnType.getQualifiedSourceName().toLowerCase().contains("exception") ||
-						returnType.getQualifiedSourceName().toLowerCase().contains("throw")))
-			return true;
 		if (returnType.isPrimitive() != null)
 			return false;
 		// exclude built-in Java classes

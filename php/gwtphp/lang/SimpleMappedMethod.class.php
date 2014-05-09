@@ -217,7 +217,7 @@ class SimpleMappedMethod implements MappedMethod  {
 			$clazz = new ReflectionClass(get_class($target));
 			$method = $clazz->getMethod($this->getMappedName());
 			return ($method->invokeArgs($target,$args));
-			//require_once(GWTPHP_DIR.'/exceptions/UnimplementedOperationException.class.php');
+			//require_once(GWTPHP_DIR.'/maps/java/lang/UnimplementedOperationException.class.php');
 			//throw new UnimplementedOperationException("Invoking method for null target not implemented yet");
 		}
 	}

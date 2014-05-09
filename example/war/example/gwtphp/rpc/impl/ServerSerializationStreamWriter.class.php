@@ -440,7 +440,7 @@ class ServerSerializationStreamWriter extends AbstractSerializationStreamWriter 
 			throw new SerializationException($e);
 			*/
 		} catch (ClassNotFoundException $e) {			
-  	  		require_once(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+  	  		require_once(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
 			throw new SerializationException($e);
 		}
 	}
@@ -486,12 +486,12 @@ class ServerSerializationStreamWriter extends AbstractSerializationStreamWriter 
 			$rClass = $instanceClass->getReflectionClass();
 			//$rClass = new ReflectionObject($instance);
 			if ($rClass == null) {
-  	  			require_once(GWTPHP_DIR.'/exceptions/ClassNotFoundException.class.php');
+  	  			require_once(GWTPHP_DIR.'/maps/java/lang/ClassNotFoundException.class.php');
 				throw new ClassNotFoundException('MappedClass: '.$instanceClass->getSignature().' do not contains ReflectionClass infomration');
 			}
 
 			if (!$rClass->hasProperty($propName)) {
-				require_once(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+				require_once(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
 				throw new SerializationException('MappedClass: '.$instanceClass->getSignature().' do not contains property: '.$propName.' Did you mapped all properties?');
 			}
 
@@ -501,7 +501,7 @@ class ServerSerializationStreamWriter extends AbstractSerializationStreamWriter 
 			} else { // not public access to property, we try invoke getter method
 				$propNameSetter = 'get'. strtoupper($propName[0]). substr($propName, 1,strlen($propName));
 				if (!$rClass->hasMethod($propNameSetter)) {
-					require_once(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+					require_once(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
 					throw new SerializationException('MappedClass: '.$instanceClass->getSignature().' do not contains getter method for private property: '.$propName.'. Mapped object should be in pojo style?');
 				}
 				$rMethod = $rClass->getMethod($propNameSetter) ;
@@ -509,7 +509,7 @@ class ServerSerializationStreamWriter extends AbstractSerializationStreamWriter 
 					$value = $rMethod->invoke($instance);
 				}
 				else {
-					require_once(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+					require_once(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
 					throw new SerializationException('MappedClass: '.$instanceClass->getSignature().' do not contains public getter method for private property: '.$propName.'. Mapped object should be in pojo style?');
 
 				}

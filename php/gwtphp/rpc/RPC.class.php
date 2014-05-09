@@ -26,9 +26,11 @@
  * @package gwtphp.rpc
  */
 
-require_once(GWTPHP_DIR.'/exceptions/NullPointerException.class.php');
-require_once(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
-require_once(GWTPHP_DIR.'/exceptions/IllegalArgumentException.class.php');
+ require_once(GWTPHP_DIR.'/maps/com/google/gwt/user/client/rpc/SerializableException.class.php');
+require_once(GWTPHP_DIR.'/maps/java/lang/GWTRuntimeException.class.php');
+require_once(GWTPHP_DIR.'/maps/java/lang/NullPointerException.class.php');
+require_once(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
+require_once(GWTPHP_DIR.'/maps/java/lang/IllegalArgumentException.class.php');
 require_once(GWTPHP_DIR.'/rpc/impl/ServerSerializationStreamReader.class.php');
 require_once(GWTPHP_DIR.'/rpc/impl/ServerSerializationStreamWriter.class.php');
 require_once(GWTPHP_DIR.'/lang/MappedClass.class.php');
@@ -132,7 +134,6 @@ class RPC {
                 //        }
                 //}
                 $serializationPolicy = $streamReader->getSerializationPolicy();
-
                 //$gwtService = $classLoader->getMapManager()->getGWTServiceMap($serviceIntfName);
 
                 /*MappedClass*/

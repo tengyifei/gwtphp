@@ -80,7 +80,7 @@ abstract class AbstractClassMapLoader implements ClassMapLoader {
             }
         }
          
-        require_once(GWTPHP_DIR.'/exceptions/ClassMapNotFoundException.class.php');
+        require_once(GWTPHP_DIR.'/maps/java/lang/ClassMapNotFoundException.class.php');
         throw new ClassMapNotFoundException('Class map not found for class: '.$className);
 
     }
@@ -91,7 +91,7 @@ abstract class AbstractClassMapLoader implements ClassMapLoader {
         if (isset($gwtphpmap) && is_array($gwtphpmap)) {
             return $gwtphpmap;
         } else {            
-            require_once(GWTPHP_DIR.'/exceptions/ClassMapNotFoundException.class.php');
+            require_once(GWTPHP_DIR.'/maps/java/lang/ClassMapNotFoundException.class.php');
             throw new ClassMapNotFoundException('Found map file without $gwtphpmap array in: '.$mapFilePath);
         }
     }

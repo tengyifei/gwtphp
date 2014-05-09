@@ -29,16 +29,18 @@ public abstract class RPCElement extends Artifact<RPCElement> {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	protected RPCElement(String className, String simpleClassName) {
+	protected RPCElement(String className, String simpleClassName, String parentClassName) {
 		super(PHPRPCLinker.class);
 		this.className = className;
 		this.classDirName = className.replace('.', '/');
 		this.simpleClassName = simpleClassName;
+		this.parentClassName = parentClassName;
 	}
 
 	protected final String className;
 	protected final String classDirName;
 	protected final String simpleClassName;
+	protected final String parentClassName;
 	
 	@Override
 	public int hashCode() {
@@ -53,8 +55,12 @@ public abstract class RPCElement extends Artifact<RPCElement> {
 		return classDirName;
 	}
 	
-	public Object getSimpleClassName() {
+	public String getSimpleClassName() {
 		return simpleClassName;
+	}
+	
+	public String getParentClassName(){
+		return parentClassName;
 	}
 	
 	@Override

@@ -71,7 +71,7 @@ final class HashSet_CustomFieldSerializer extends AbstractList_CustomFieldSerial
 //			$consuming_type = 1;
 //		} else {
 //			class_exists('SerializationException')
-//			|| require(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+//			|| require(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
 //			throw new SerializationException("Error occurred while deserialize HashSet: "
 //			."HashMap_CustomFieldSerializer deserialize only array() or HashSet object, but given: "
 //			.gettype($instance));
@@ -119,7 +119,7 @@ final class HashSet_CustomFieldSerializer extends AbstractList_CustomFieldSerial
 //			//for (Object obj : instance) {
 //			if (!$instanceClass->isGeneric())  {
 //				class_exists('SerializationException') 
-//				|| require(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+//				|| require(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
 //				throw new SerializationException("Error occurred while casting native php array to ArrayList: "
 //				."ArrayList must be mapped as generic type! add < > to signatures and CRC");
 //			}

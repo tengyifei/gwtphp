@@ -153,7 +153,7 @@ class SimpleMappedClass implements MappedClass {
 		if ($parse && $this->isArray() ) {			
 			$pos = strpos($crc,'[');
 			if ($pos === false && !$this->getComponentType()->isPrimitive()) {
-				require_once(GWTPHP_DIR.'/exceptions/CRCParseException.class.php');
+				require_once(GWTPHP_DIR.'/maps/java/lang/CRCParseException.class.php');
 				throw new CRCParseException('\'[\' not found in:'.$crc);
 				
 			}
@@ -175,7 +175,7 @@ class SimpleMappedClass implements MappedClass {
 			} else if (($this->getComponentType()->isArray() || $this->getComponentType()->isArray()) && $nextCRC[0]!='[' && $nextCRC[0]!='L') {
 				$this->getComponentType()->setCRC($nextCRC,true);
 			} else {
-				require_once(GWTPHP_DIR.'/exceptions/CRCParseException.class.php');
+				require_once(GWTPHP_DIR.'/maps/java/lang/CRCParseException.class.php');
 				throw new CRCParseException($crc);
 				
 			}
@@ -193,7 +193,7 @@ class SimpleMappedClass implements MappedClass {
 					$crcParamsCount = count($crcParams);
 					$paramsCount = count($params);
 					if ($crcParamsCount != $paramsCount) {
-						require_once(GWTPHP_DIR.'/exceptions/CRCParseException.class.php');
+						require_once(GWTPHP_DIR.'/maps/java/lang/CRCParseException.class.php');
 						throw new CRCParseException("Parsing generic CRC error: (probably not equal count of typeParameters: $paramsCount and count of typeCRC: $crcParamsCount) CRC: " .$crc);
 					}
 					for ($i = 0; $i < $paramsCount; ++$i) {
@@ -204,7 +204,7 @@ class SimpleMappedClass implements MappedClass {
 					$this->crc = $crc;
 				}
 			} catch (SignatureParseException $ex) {
-				require_once(GWTPHP_DIR.'/exceptions/CRCParseException.class.php');
+				require_once(GWTPHP_DIR.'/maps/java/lang/CRCParseException.class.php');
 				throw new CRCParseException('Parsing generic CRC error: (probably not equal count of \'< and \'> '.$crc);
 			}
 			

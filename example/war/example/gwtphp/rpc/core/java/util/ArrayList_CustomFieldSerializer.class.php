@@ -67,7 +67,7 @@ parent::deserialize($streamReader,$instance,self::getConsumingType($instance),'A
 //			$consuming_type = 1;
 //		} else {
 //			class_exists('SerializationException')
-//			|| require(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+//			|| require(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
 //			throw new SerializationException("Error occurred while deserialize ArrayList: "
 //			."HashMap_CustomFieldSerializer deserialize only array() or ArrayList object, but given: "
 //			.gettype($instance));
@@ -116,13 +116,13 @@ parent::deserialize($streamReader,$instance,self::getConsumingType($instance),'A
 //			//for (Object obj : instance) {
 //			if (!$instanceClass->isGeneric())  {
 //				class_exists('SerializationException') 
-//				|| require(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+//				|| require(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
 //				throw new SerializationException("Error occurred while casting native php array to ArrayList: "
 //				."ArrayList must be mapped as generic type! add < > to signatures and CRC");
 //			}
 //			
 ////			if (!$instanceClass->isGeneric())  {
-////				class_exists('SerializationException') || require(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+////				class_exists('SerializationException') || require(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
 ////				throw new SerializationException("ArrayList must be mapped as generic type! add < > to signatures and CRC");
 ////			}
 //			$typeParameters = $instanceClass->getTypeParameters();

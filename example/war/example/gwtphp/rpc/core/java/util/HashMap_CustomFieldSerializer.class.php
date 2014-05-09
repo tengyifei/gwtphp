@@ -67,7 +67,7 @@ final class HashMap_CustomFieldSerializer {
 		} else if (is_array($instance)) {
 			$consuming_type = 1;
 		} else {
-			require_once(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+			require_once(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
 			throw new SerializationException("Error occurred while deserialize HashMap: "
 			."HashMap_CustomFieldSerializer deserialize only array() or HashMap object, but given: "
 			.gettype($instance));
@@ -83,7 +83,7 @@ final class HashMap_CustomFieldSerializer {
 			} else {
 				if (!FORCE_CAST_TO_PHP_PRIMITIVE_TYPES || is_object($key)) {
 					echo $key.' : '.gettype($key);
-					require_once(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+					require_once(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
 					throw new SerializationException("Error occurred while casting native php array to HashMap: "
 					."HashMap_CustomFieldSerializer serialize only array() where"
 					." keys object are mapped by one of following types:"
@@ -130,14 +130,14 @@ final class HashMap_CustomFieldSerializer {
 
 			//for (Object obj : instance) {
 			if (!$instanceClass->isGeneric())  {
-				require_once(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+				require_once(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
 				throw new SerializationException("Error occurred while casting native php array to HashMap: "
 				."HashMap must be mapped as generic type! add < > to signatures and CRC");
 			}
 			$typeParameters = $instanceClass->getTypeParameters();
 
 			if ( !isset(HashMap_CustomFieldSerializer::$ACCEPTABLE_KEY_TYPES[$typeParameters[0]->getSignature()]) ) {
-				require_once(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+				require_once(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
 				throw new SerializationException("Error occurred while casting native php array to HashMap: "
 				."HashMap_CustomFieldSerializer serialize only array() where "
 				."keys object are mapped by one of following types: "
@@ -156,7 +156,7 @@ final class HashMap_CustomFieldSerializer {
 		//  streamWriter.writeObject(entry.getValue());
 		//}
 		else {
-			require_once(GWTPHP_DIR.'/exceptions/UnimplementedOperationException.class.php');
+			require_once(GWTPHP_DIR.'/maps/java/lang/UnimplementedOperationException.class.php');
 			throw new UnimplementedOperationException("HashMap_CustomFieldSerializer serialize type: "+gettype($instance) + " not implemented");
 		}
 	}

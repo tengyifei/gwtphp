@@ -516,12 +516,12 @@ final class ServerSerializationStreamReader extends AbstractSerializationStreamR
 			$propName = $declField->getName ();
 			$rClass = $instanceClass->getReflectionClass ();
 			if ($rClass == null) {
-				require_once (GWTPHP_DIR . '/exceptions/ClassNotFoundException.class.php');
+				require_once (GWTPHP_DIR . '/maps/java/lang/ClassNotFoundException.class.php');
 				throw new ClassNotFoundException ( 'MappedClass: ' . $instanceClass->getSignature () . ' do not contains ReflectionClass infomration' );
 			}
 			
 			if (! $rClass->hasProperty ( $propName )) {
-				require_once (GWTPHP_DIR . '/exceptions/SerializationException.class.php');
+				require_once (GWTPHP_DIR . '/maps/java/lang/SerializationException.class.php');
 				throw new SerializationException ( 'MappedClass: ' . $instanceClass->getSignature () . ' do not contains property: ' . $propName . ' Did you mapped all properties?' );
 			}
 			
@@ -531,14 +531,14 @@ final class ServerSerializationStreamReader extends AbstractSerializationStreamR
 			} else { // not public access to property, we try invoke setter method
 				$propNameSetter = 'set' . strtoupper ( $propName [0] ) . substr ( $propName, 1, strlen ( $propName ) );
 				if (! $rClass->hasMethod ( $propNameSetter )) {
-					require_once (GWTPHP_DIR . '/exceptions/SerializationException.class.php');
+					require_once (GWTPHP_DIR . '/maps/java/lang/SerializationException.class.php');
 					throw new SerializationException ( 'MappedClass: ' . $instanceClass->getSignature () . ' do not contains setter method for private property: ' . $propName . '. Mapped object should be in pojo style?' );
 				}
 				$rMethod = $rClass->getMethod ( $propNameSetter );
 				if ($rMethod->isPublic ()) {
 					$rMethod->invoke ( $instance, $value );
 				} else {
-					require_once (GWTPHP_DIR . '/exceptions/SerializationException.class.php');
+					require_once (GWTPHP_DIR . '/maps/java/lang/SerializationException.class.php');
 					throw new SerializationException ( 'MappedClass: ' . $instanceClass->getSignature () . ' do not contains public setter method for private property: ' . $propName . '. Mapped object should be in pojo style?' );
 				
 				}
@@ -594,12 +594,12 @@ final class ServerSerializationStreamReader extends AbstractSerializationStreamR
 			$propName = $declField->getName ();
 			$rClass = $instanceClass->getReflectionClass ();
 			if ($rClass == null) {
-				require_once (GWTPHP_DIR . '/exceptions/ClassNotFoundException.class.php');
+				require_once (GWTPHP_DIR . '/maps/java/lang/ClassNotFoundException.class.php');
 				throw new ClassNotFoundException ( 'MappedClass: ' . $instanceClass->getSignature () . ' do not contains ReflectionClass infomration' );
 			}
 			
 			if (! $rClass->hasProperty ( $propName )) {
-				require_once (GWTPHP_DIR . '/exceptions/SerializationException.class.php');
+				require_once (GWTPHP_DIR . '/maps/java/lang/SerializationException.class.php');
 				throw new SerializationException ( 'MappedClass: ' . $instanceClass->getSignature () . ' do not contains property: ' . $propName . ' Did you mapped all properties?' );
 			}
 			
@@ -609,14 +609,14 @@ final class ServerSerializationStreamReader extends AbstractSerializationStreamR
 			} else { // not public access to property, we try invoke setter method
 				$propNameSetter = 'set' . strtoupper ( $propName [0] ) . substr ( $propName, 1, strlen ( $propName ) );
 				if (! $rClass->hasMethod ( $propNameSetter )) {
-					require_once (GWTPHP_DIR . '/exceptions/SerializationException.class.php');
+					require_once (GWTPHP_DIR . '/maps/java/lang/SerializationException.class.php');
 					throw new SerializationException ( 'MappedClass: ' . $instanceClass->getSignature () . ' do not contains setter method for private property: ' . $propName . '. Mapped object should be in pojo style?' );
 				}
 				$rMethod = $rClass->getMethod ( $propNameSetter );
 				if ($rMethod->isPublic ()) {
 					$rMethod->invoke ( $instance, $value );
 				} else {
-					require_once (GWTPHP_DIR . '/exceptions/SerializationException.class.php');
+					require_once (GWTPHP_DIR . '/maps/java/lang/SerializationException.class.php');
 					throw new SerializationException ( 'MappedClass: ' . $instanceClass->getSignature () . ' do not contains public setter method for private property: ' . $propName . '. Mapped object should be in pojo style?' );
 				
 				}

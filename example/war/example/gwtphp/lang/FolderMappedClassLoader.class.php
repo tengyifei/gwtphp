@@ -93,10 +93,9 @@ class FolderMappedClassLoader extends AbstractMappedClassLoader {
 		}
 		else {			
 			if (($_class = $this->findMappedClass($className,$cachable)) == null) {
-				require_once(GWTPHP_DIR.'/exceptions/ClassMapNotFoundException.class.php');
+				require_once(GWTPHP_DIR.'/maps/java/lang/ClassMapNotFoundException.class.php');
 				throw new ClassMapNotFoundException("Class map not found for class: ".$className);
-			}			
-
+			}
 		}
 
 		
@@ -114,8 +113,8 @@ class FolderMappedClassLoader extends AbstractMappedClassLoader {
 
 		$pos = strrpos($classFileName, $this->getClassLoader()->getFilePostfix());		
 		if (false === $pos) {
-			require_once(GWTPHP_DIR.'/exceptions/ClassFileNotFoundException.class.php');
-			throw new ClassFileNotFoundException("RuntimeException: Unknow format of class file name: '$classFileName'. We expect following postfix: ".$this->getClassLoader()->getFilePostfix());			
+			require_once(GWTPHP_DIR.'/maps/java/lang/ClassFileNotFoundException.class.php');
+			throw new ClassFileNotFoundException("RuntimeException: Unknown format of class file name: '$classFileName'. We expect following postfix: ".$this->getClassLoader()->getFilePostfix());			
 		}
 		
 		$mapFileName = substr($classFileName,0,$pos).$this->getClassMapLoader()->getFilePostfix();
@@ -131,6 +130,14 @@ class FolderMappedClassLoader extends AbstractMappedClassLoader {
 	 */
 	public function findMappedClassByReflectionClass(ReflectionClass $reflectionClass) {
 		$classMapFileName = $this->convertClassFileNameToMapFileName($reflectionClass->getFileName());
+		
+		// redirect exceptions definitions
+		/*$classMapFileName = str_replace('\\', '/', $classMapFileName);
+		$exceptionsDir = str_replace('\\', '/', realpath(GWTPHP_DIR.'/exceptions'));
+		if (strncmp($classMapFileName, $exceptionsDir, strlen($exceptionsDir))==0){
+			$classMapFileName = str_replace($exceptionsDir, GWTPHP_DIR.'/maps/java/lang', $classMapFileName);
+		}*/
+		
 		$this->logger->debug("Load class map file: ".$classMapFileName);
 		if (file_exists($classMapFileName)) {
 			$gwtphpmap = $this->getClassMapLoader()->findGWTPHPMapInFile($classMapFileName);
@@ -153,12 +160,12 @@ class FolderMappedClassLoader extends AbstractMappedClassLoader {
 				}
 			} 
 			
-			require_once(GWTPHP_DIR.'/exceptions/ClassMapNotFoundException.class.php');			
+			require_once(GWTPHP_DIR.'/maps/java/lang/ClassMapNotFoundException.class.php');			
 			throw new ClassMapNotFoundException('Found class map array but without className in file: '
 				.$this->convertClassFileNameToMapFileName($reflectionClass->getFileName()));
 		}
 		
-		require_once(GWTPHP_DIR.'/exceptions/ClassMapNotFoundException.class.php');			
+		require_once(GWTPHP_DIR.'/maps/java/lang/ClassMapNotFoundException.class.php');			
 		throw new ClassMapNotFoundException('Not found class map: '.$classMapFileName);
 	}
 	
@@ -206,9 +213,9 @@ class FolderMappedClassLoader extends AbstractMappedClassLoader {
 			$className = $classMap['className'];
 			
 				$_class = new SimpleMappedClass();
-				
+
 				// to prevent infinitive recursive loop we cache class before initiate it  
-				$cachable && $this->addMappedClassToCache($className,$_class);
+				if ($cachable) $this->addMappedClassToCache($className,$_class);
 				
 				$_class->setClassLoader($this->getClassLoader());
 				$_class->setSignature($className);
@@ -303,9 +310,6 @@ class FolderMappedClassLoader extends AbstractMappedClassLoader {
 				}
 				$_class->setMappedFields($_fields);	
 				
-				
-			
-				
 				if (isset($classMap['extends'])) {
 					$_class->setSuperclass($this->loadMappedClass($classMap['extends']));
 				}
@@ -353,7 +357,7 @@ class FolderMappedClassLoader extends AbstractMappedClassLoader {
 
 			return $_class;
 		} else {
-			require_once(GWTPHP_DIR.'/exceptions/SignatureParseException.class.php');
+			require_once(GWTPHP_DIR.'/maps/java/lang/SignatureParseException.class.php');
 			throw new SignatureParseException("Signature for not primitive or array type: ".$signature);
 		}
 	}

@@ -123,7 +123,10 @@ public class PHPRPCLinker extends AbstractLinker {
 				src.println(")");
 		}
 		src.outdent();
-		src.println(")");		//end of fields array
+		src.println("),");		//end of fields array
+		if (object.getParentClassName()!=null){
+			src.println("'extends' => '%s'", object.getParentClassName());
+		}
 		src.outdent();
 		src.println(");");		//end of object definition
 		
@@ -205,7 +208,10 @@ public class PHPRPCLinker extends AbstractLinker {
 				src.println(")");
 		}
 		src.outdent();
-		src.println(")");		//end of methods array
+		src.println("),");		//end of methods array
+		if (service.getParentClassName()!=null){
+			src.println("'extends' => '%s'", service.getParentClassName());
+		}
 		src.outdent();
 		src.println(");");		//end of gwtphpmap element
 		

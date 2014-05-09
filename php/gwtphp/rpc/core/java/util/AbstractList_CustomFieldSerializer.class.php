@@ -38,7 +38,7 @@ abstract  class AbstractList_CustomFieldSerializer {
 	public static function deserialize(SerializationStreamReader $streamReader,
 	$instance,$consuming_type,$name) {
 		if ($consuming_type < 0 ) {
-			require_once(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+			require_once(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
 			throw new SerializationException("Error occurred while deserialize $name: "
 			.$name."_CustomFieldSerializer deserialize only array() or "
 			."$name object, but given: "
@@ -84,13 +84,13 @@ abstract  class AbstractList_CustomFieldSerializer {
 			$streamWriter->writeInt($size);
 			//for (Object obj : instance) {
 			if (!$instanceClass->isGeneric())  {
-				require_once(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+				require_once(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
 				throw new SerializationException("Error occurred while casting native php array to $name: "
 			."$name must be mapped as generic type! add < > to signatures and CRC");
 			}
 			
 //			if (!$instanceClass->isGeneric())  {
-//				class_exists('SerializationException') || require(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+//				class_exists('SerializationException') || require(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
 //				throw new SerializationException("ArrayList must be mapped as generic type! add < > to signatures and CRC");
 //			}
 			$typeParameters = $instanceClass->getTypeParameters();

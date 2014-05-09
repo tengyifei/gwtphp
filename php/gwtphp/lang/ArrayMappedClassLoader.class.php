@@ -116,7 +116,7 @@ class ArrayMappedClassLoader extends AbstractMappedClassLoader {
 				//$phpClass = $this->classLoader->loadClass($_class->getMappedBy());
 				
 				//} else {
-				require_once(GWTPHP_DIR.'/exceptions/ClassMapNotFoundException.class.php');
+				require_once(GWTPHP_DIR.'/maps/java/lang/ClassMapNotFoundException.class.php');
 				throw new ClassMapNotFoundException($className);
 				//$phpClass = $this->classLoader->loadClass($className);
 				//$_class = new SimpleMappedClass();
@@ -312,7 +312,7 @@ class ArrayMappedClassLoader extends AbstractMappedClassLoader {
 
 			return $_class;
 		} else {
-			require_once(GWTPHP_DIR.'/exceptions/SignatureParseException.class.php');
+			require_once(GWTPHP_DIR.'/maps/java/lang/SignatureParseException.class.php');
 			throw new SignatureParseException("Signature for not primitive or array type: ".$signature);
 		}
 	}

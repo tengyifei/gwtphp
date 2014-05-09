@@ -26,8 +26,6 @@
 /**
  * @package gwtphp.maps.com.google.gwt.user.client.rpc
  */
-
-
 class SerializableException extends Exception implements IsSerializable {
 	
 	
@@ -38,9 +36,9 @@ class SerializableException extends Exception implements IsSerializable {
 	protected $message;
 	
 	
-	public function __construct($message = null, $cause = null) {		
-		parent::__construct($message,0);
-		$this->message = $message;		
+	public function __construct($message = null, $cause = null) {
+		parent::__construct($message, 0);	//PHP Exception does not support cause
+		$this->message = $message;
 	}
 	
 	/**	 

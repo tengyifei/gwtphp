@@ -23,10 +23,10 @@
  * the License.
  */
 
-class IllegalArgumentException extends RuntimeException {
-
-	public __construct($message = null, $cause = null){
-		parent::__construct($s, $cause);
-	}
-	
+/**
+ * @package gwtphp.maps.java.lang
+ */
+class IllegalArgumentException extends GWTRuntimeException {
 }
+
+?>

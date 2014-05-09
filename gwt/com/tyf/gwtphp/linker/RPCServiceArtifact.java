@@ -32,8 +32,8 @@ public class RPCServiceArtifact extends RPCElement {
 
 	private final Map<String, RPCFunction> methods = new HashMap<String, RPCFunction>();
 
-	public RPCServiceArtifact(String className, String simpleClassName) {
-		super(className, simpleClassName);
+	public RPCServiceArtifact(String className, String simpleClassName, String parentClassName) {
+		super(className, simpleClassName, parentClassName);
 	}
 
 	public void putMethod(String methodName, RPCFunction methodInfo) {

@@ -139,7 +139,7 @@ private static $sInstance;// =
    */
   public function validateDeserialize(MappedClass $mappedClass) {
   if (!$this->isInstantiable($mappedClass)) {
-  	  require_once(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+  	  require_once(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
       throw new SerializationException(
           'Type \''
               + $mappedClass->getSignature()
@@ -158,7 +158,7 @@ private static $sInstance;// =
   public function validateSerialize(MappedClass $mappedClass) {
   	 if (!$this->isInstantiable($mappedClass)) {
   	 	
-  	  require_once(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+  	  require_once(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
       throw new SerializationException(
           'Type \''
               + $mappedClass->getSignature()

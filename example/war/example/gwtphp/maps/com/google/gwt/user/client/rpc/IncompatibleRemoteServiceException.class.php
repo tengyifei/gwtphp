@@ -34,8 +34,7 @@ class IncompatibleRemoteServiceException extends Exception implements IsSerializ
 	 */
 	private $couse;
 	
-	const DEFAULT_MESSAGE = "This application is out of "
-      . "date, please click the refresh button on your browser.";
+	const DEFAULT_MESSAGE = "This application is out of date, please click the refresh button on your browser.";
 	
 	/**
 	 *

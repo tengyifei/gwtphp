@@ -22,7 +22,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-quire_once "Object.class.php";
+require_once "Object.class.php";
 
 /**
  * @package gwtphp.maps.java.lang

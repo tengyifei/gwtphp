@@ -80,7 +80,7 @@ final class Vector_CustomFieldSerializer extends AbstractList_CustomFieldSeriali
 //    $streamWriter->writeInt($size);
 //    //for (Object obj : instance) {
 //    if (!$instanceClass->isGeneric())  {
-//    	class_exists('SerializationException') || require(GWTPHP_DIR.'/exceptions/SerializationException.class.php');
+//    	class_exists('SerializationException') || require(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
 //    	throw new SerializationException("ArrayList must be mapped as generic type! add < > to signatures and CRC");
 //    }
 //    $typeParameters = $instanceClass->getTypeParameters();
