@@ -32,10 +32,14 @@ require_once (GWTPHP_DIR . '/util/TypeConversionUtil.class.php');
 //require_once(GWTPHP_DIR.'/lang/TypeSignatures.class.php');
 require_once (GWTPHP_DIR . '/rpc/impl/SerializabilityUtil.class.php');
 
-define ( 'CHAR_UFFFF', "|" );
+define ( 'CHAR_SEPARATOR', "|" );
 
-function replace_unicode_escape_sequence($match) {
+function unescape_unicode($match) {
 	return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
+}
+
+function unescape_gwt_separator($match){
+	return CHAR_SEPARATOR;
 }
 
 /**
@@ -181,7 +185,7 @@ final class ServerSerializationStreamReader extends AbstractSerializationStreamR
 		$idx = 0;
 		$nextIdx = 0;
 		
-		while ( false != ($nextIdx = strpos ( $encodedTocens, CHAR_UFFFF, $idx )) ) {
+		while ( false != ($nextIdx = strpos ( $encodedTocens, CHAR_SEPARATOR, $idx )) ) {
 			$current = substr ( $encodedTocens, $idx, $nextIdx - $idx );
 			$this->tokenList [] = ($current);
 			$idx = $nextIdx + 1;
@@ -222,12 +226,14 @@ final class ServerSerializationStreamReader extends AbstractSerializationStreamR
 	 * @return void
 	 */
 	private function deserializeStringTable() { // TODO -> gwt1.5 BoundedList here
-		$typeNameCount = $this->readInt (); // array lenght - ignored in php
+		$typeNameCount = $this->readInt (); // array length - ignored in php
 		$this->stringTable = array ();
 		
 		for($typeNameIndex = 0; $typeNameIndex < $typeNameCount; ++ $typeNameIndex) {
-			//$this->stringTable [$typeNameIndex] = json_decode('"'.$this->extract().'"');
-			$this->stringTable [$typeNameIndex] = preg_replace_callback('/\\\\u([0-9a-f]{4})/i', 'replace_unicode_escape_sequence', $this->extract());
+			$rawString = $this->extract();
+			$rawString = preg_replace_callback('/\\\\u([0-9a-f]{4})/i', 'unescape_unicode', $rawString);
+			$rawString = preg_replace_callback('/\\\\!/', 'unescape_gwt_separator', $rawString);
+			$this->stringTable [$typeNameIndex] = $rawString;
 		}
 	}
 	

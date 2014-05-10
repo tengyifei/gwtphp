@@ -1,4 +1,4 @@
-GWTPHP
+GWTPHP RPC
 ======
 
 Huge credits go to Rafal M.Malinowski, the author of the original GWTPHP library for GWT 1.5
@@ -102,3 +102,8 @@ class GreetingServiceImpl {
 Now the site is ready!
 
 ![Working demo](http://i58.tinypic.com/kcccir.png)
+
+## Logging ##
+GWTPHP uses Log4PHP for recording debugging messages. By default, all logging switches are turned off. You may enable logging by editing log4php.xml and uncomment the respective configurations.
+
+The log file is located in the same directory as log4php.xml. But these paths may be changed in rpc.php.
