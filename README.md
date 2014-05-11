@@ -1,9 +1,9 @@
 GWTPHP RPC
 ======
 
-Huge credits go to Rafal M.Malinowski, the author of the original GWTPHP library for GWT 1.5
+Demo: http://goo.gl/2vMteQ
 
-His project site: https://code.google.com/p/gwtphp/
+Huge credits go to Rafal M.Malinowski, the author of the original GWTPHP library for GWT 1.5. His project site: https://code.google.com/p/gwtphp/
 
 ## Introduction ##
 This library gives PHP sites the capability to interface with GWT code via Remote Procedure Call. No change of source code is needed on the GWT side, and minimal effort is required to configure PHP.
