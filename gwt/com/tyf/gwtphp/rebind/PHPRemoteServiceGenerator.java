@@ -130,8 +130,8 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 		if (customObjectSet.contains(type))
 			return objects;
 
-		Set<JType> discoveredTypes = new HashSet<JType>();
 		if (isCustom(type)) {
+			Set<JType> discoveredTypes = new HashSet<JType>();
 			String parentName = getSuperTypeName(type);
 			JClassType classType;
 			RPCObjectArtifact object = new RPCObjectArtifact(type.getQualifiedSourceName(),
@@ -146,18 +146,19 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 			}
 			objects.add(object);
 			customObjectSet.add(type);
-			// recursively discover the parent classes. This has to be done after
-			// the current type is added into the customObjectSet
+			
+			// recursively discover the parent classes. This has to be done after the current
+			// type is added into the customObjectSet to avoid infinite recursion
 			if (classType != null){
 				if (classType.getSuperclass() != null){
 					objects.addAll(discoverObjects(classType.getSuperclass()));
 				}
 			}
-		}
-		
-		// recursively discover other custom objects refereced by this object
-		for (JType t : discoveredTypes) {
-			objects.addAll(discoverObjects(t));
+			
+			// recursively discover other custom objects refereced by this object
+			for (JType t : discoveredTypes) {
+				objects.addAll(discoverObjects(t));
+			}
 		}
 		return objects;
 	}

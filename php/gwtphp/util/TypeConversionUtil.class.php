@@ -100,7 +100,7 @@ class TypeConversionUtil {
 			return ($ascii-97+26);
 		}
 		if ($ascii>=48 && $ascii<=57){	//'0'-'9'
-			return ($ascii-52);
+			return ($ascii-48+52);
 		}
 		if ($ascii==36) return 62;		//'$'
 		if ($ascii==95) return 63;		//'_'
