@@ -102,11 +102,11 @@ class RPC {
         $logger = LoggerManager::getLogger('gwtphp.rpc.RPC');
 
         if ($encodedRequest === null) {
-        	require_once(GWTPHP_DIR.'/exceptions/NullPointerException.class.php');
+        	require_once(GWTPHP_DIR.'/maps/java/lang/NullPointerException.class.php');
             throw new NullPointerException("encodedRequest cannot be null");
         }
         if (strlen($encodedRequest) == 0) {        	
-        	require_once(GWTPHP_DIR.'/exceptions/IllegalArgumentException.class.php');
+        	require_once(GWTPHP_DIR.'/maps/java/lang/IllegalArgumentException.class.php');
             throw new IllegalArgumentException("encodedRequest cannot be empty");
         }
 
