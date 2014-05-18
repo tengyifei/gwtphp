@@ -441,7 +441,7 @@ class ServerSerializationStreamWriter extends AbstractSerializationStreamWriter 
 			*/
 		} catch (ClassNotFoundException $e) {			
   	  		require_once(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
-			throw new SerializationException($e);
+			throw new SerializationException($e->getMessage());
 		}
 	}
 	
