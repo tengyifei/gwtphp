@@ -1,5 +1,8 @@
 *.class
 
+dwsync.xml
+_notes/
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
