@@ -30,9 +30,6 @@ require_once(GWTPHP_DIR.'/rpc/impl/SerializedInstanceReference.class.php');
 require_once(GWTPHP_DIR.'/util/HashMapUtil.class.php');
 require_once(GWTPHP_DIR.'/GWTPHPContext.class.php');
 
-
-require_once(GWTPHP_DIR.'/rpc/core/java/lang/Integer_CustomFieldSerializer.class.php');
-
 class AnonymousSerializedInstanceReference implements SerializedInstanceReference {
 	
 	

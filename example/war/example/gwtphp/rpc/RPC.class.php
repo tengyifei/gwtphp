@@ -26,7 +26,7 @@
  * @package gwtphp.rpc
  */
 
- require_once(GWTPHP_DIR.'/maps/com/google/gwt/user/client/rpc/SerializableException.class.php');
+require_once(GWTPHP_DIR.'/maps/com/google/gwt/user/client/rpc/SerializableException.class.php');
 require_once(GWTPHP_DIR.'/maps/java/lang/GWTRuntimeException.class.php');
 require_once(GWTPHP_DIR.'/maps/java/lang/NullPointerException.class.php');
 require_once(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
@@ -37,6 +37,7 @@ require_once(GWTPHP_DIR.'/lang/MappedClass.class.php');
 require_once(GWTPHP_DIR.'/rpc/impl/LegacySerializationPolicy.class.php');
 require_once(GWTPHP_DIR.'/rpc/RPCRequest.class.php');
 
+require_once(GWTPHP_DIR.'/maps/java/lang/Object.class.php');
 
 class RPC {
 
@@ -102,11 +103,11 @@ class RPC {
         $logger = LoggerManager::getLogger('gwtphp.rpc.RPC');
 
         if ($encodedRequest === null) {
-        	require_once(GWTPHP_DIR.'/exceptions/NullPointerException.class.php');
+        	require_once(GWTPHP_DIR.'/maps/java/lang/NullPointerException.class.php');
             throw new NullPointerException("encodedRequest cannot be null");
         }
         if (strlen($encodedRequest) == 0) {        	
-        	require_once(GWTPHP_DIR.'/exceptions/IllegalArgumentException.class.php');
+        	require_once(GWTPHP_DIR.'/maps/java/lang/IllegalArgumentException.class.php');
             throw new IllegalArgumentException("encodedRequest cannot be empty");
         }
 
@@ -160,7 +161,7 @@ class RPC {
                     require_once(GWTPHP_DIR.'/maps/com/google/gwt/user/client/rpc/IncompatibleRemoteServiceException.class.php');
                     throw new IncompatibleRemoteServiceException(
 		            "Could not locate requested interface '" . $serviceIntfName
-                    . "' in default classloader", $e);
+                    . "' in default classloader: " . $e->getMessage());
                 }
 
                 $serviceMethodName =  $streamReader->readString();
@@ -183,7 +184,7 @@ class RPC {
                     } catch (ClassNotFoundException $e) {
                         require_once(GWTPHP_DIR.'/maps/com/google/gwt/user/client/rpc/IncompatibleRemoteServiceException.class.php');
                         throw new IncompatibleRemoteServiceException("Parameter " + $i
-                        + " of is of an unknown type '" + $paramClassName + "'", $e);
+                        + " of is of an unknown type '" + $paramClassName + "': " . $e->getMessage());
                     }
                 }
 
@@ -299,11 +300,11 @@ class RPC {
         //SerializationPolicy $serializationPolicy
 
         if ($serviceMethod === null) {
-        	require_once(GWTPHP_DIR.'/exceptions/NullPointerException.class.php');
+        	require_once(GWTPHP_DIR.'/maps/java/lang/NullPointerException.class.php');
             throw new NullPointerException("Not found matches serviceMethod (TIP: did you map your service method correctly?");
         }
         if ($serializationPolicy === null) {
-        	require_once(GWTPHP_DIR.'/exceptions/NullPointerException.class.php');
+        	require_once(GWTPHP_DIR.'/maps/java/lang/NullPointerException.class.php');
             throw new NullPointerException("serializationPolicy");
         }
 
@@ -366,12 +367,12 @@ class RPC {
             public static function encodeResponseForSuccess(MappedMethod $serviceMethod,$object, SerializationPolicy $serializationPolicy,MappedClassLoader $mappedClassLoader) {
 
                 if ($serviceMethod === null) {
-        			require_once(GWTPHP_DIR.'/exceptions/NullPointerException.class.php');
+        			require_once(GWTPHP_DIR.'/maps/java/lang/NullPointerException.class.php');
                     throw new NullPointerException("serviceMethod cannot be null");
                 }
 
                 if ($serializationPolicy === null) {
-        			require_once(GWTPHP_DIR.'/exceptions/NullPointerException.class.php');
+        			require_once(GWTPHP_DIR.'/maps/java/lang/NullPointerException.class.php');
                     throw new NullPointerException("serializationPolicy");
                 }
 
@@ -442,7 +443,7 @@ class RPC {
             Exception $cause, SerializationPolicy $serializationPolicy = null,MappedClassLoader $mappedClassLoader)
             {
                 if ($cause === null) {
-        			require_once(GWTPHP_DIR.'/exceptions/NullPointerException.class.php');
+        			require_once(GWTPHP_DIR.'/maps/java/lang/NullPointerException.class.php');
                     throw new NullPointerException("cause cannot be null");
                 }
                 if ($serializationPolicy === null) {
@@ -452,10 +453,10 @@ class RPC {
 
                 if ($serviceMethod != null && !RPC::isExpectedException($serviceMethod, $cause)) {
                     
-        			require_once(GWTPHP_DIR.'/exceptions/UnexpectedException.class.php');
+        			require_once(GWTPHP_DIR.'/maps/java/lang/UnexpectedException.class.php');
                     throw new UnexpectedException("Service method '"
                     . RPC::getSourceRepresentation($serviceMethod)
-                    . "' threw an unexpected exception: ". $cause->__toString(), $cause);
+                    . "' threw an unexpected exception: " . $cause->__toString());
                 }
 
                 //class_exists('UnimplementedOperationException') || require(GWTPHP_DIR.'/exceptions/UnimplementedOperationException.class.php');
@@ -480,7 +481,7 @@ class RPC {
              * Returns a string that encodes the results of an RPC call. Private overload
              * that takes a flag signaling the preamble of the response payload.
              *
-             * @param Objcet $object the object that we wish to send back to the client
+             * @param Object $object the object that we wish to send back to the client
              * @param boolean $wasThrown if true, the object being returned was an exception thrown
              *          by the service method; if false, it was the result of the service
              *          method's invocation

@@ -69,7 +69,7 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 
 			RPCServiceArtifact artifact = new RPCServiceArtifact(
 					classType.getQualifiedSourceName(), classType.getSimpleSourceName(),
-					getSuperTypeName(classType));
+					getSuperTypeName(classType), classType.isInterface()!=null, classType.isAbstract());
 
 			// discover new custom objects, whose information must be known by
 			// the server
@@ -134,15 +134,21 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 			Set<JType> discoveredTypes = new HashSet<JType>();
 			String parentName = getSuperTypeName(type);
 			JClassType classType;
-			RPCObjectArtifact object = new RPCObjectArtifact(type.getQualifiedSourceName(),
-					type.getSimpleSourceName(), parentName, TypeUtil.getCRC(type));
+			RPCObjectArtifact object;
 			if ((classType = type.isClass()) != null) {
+				object = new RPCObjectArtifact(type.getQualifiedSourceName(),
+						type.getSimpleSourceName(), parentName, 
+						classType.isInterface()!=null, classType.isAbstract(), TypeUtil.getCRC(type));
 				for (JField f : classType.getFields()) {
 					String fieldName = f.getName();
 					String fieldType = TypeUtil.getPHPRpcTypeName(f.getType(), discoveredTypes);
 					object.putField(fieldName, new RPCField(fieldName, fieldType, 
 							TypeUtil.toPHPType(f.getType())));
 				}
+			}else{
+				object = new RPCObjectArtifact(type.getQualifiedSourceName(),
+						type.getSimpleSourceName(), parentName, 
+						false, false, TypeUtil.getCRC(type));
 			}
 			objects.add(object);
 			customObjectSet.add(type);

@@ -29,7 +29,6 @@
 
 require_once (GWTPHP_DIR . '/rpc/impl/AbstractSerializationStreamReader.class.php');
 require_once (GWTPHP_DIR . '/util/TypeConversionUtil.class.php');
-//require_once(GWTPHP_DIR.'/lang/TypeSignatures.class.php');
 require_once (GWTPHP_DIR . '/rpc/impl/SerializabilityUtil.class.php');
 
 define ( 'CHAR_SEPARATOR', "|" );
@@ -38,8 +37,12 @@ function unescape_unicode($match) {
 	return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
 }
 
-function unescape_gwt_separator($match){
-	return CHAR_SEPARATOR;
+function unescape_gwt($match){
+	if ($match[0][1]=='!')
+		return CHAR_SEPARATOR;
+	if ($match[0][1]=='0')
+		return "\0";
+	return $match[0];
 }
 
 /**
@@ -231,8 +234,8 @@ final class ServerSerializationStreamReader extends AbstractSerializationStreamR
 		
 		for($typeNameIndex = 0; $typeNameIndex < $typeNameCount; ++ $typeNameIndex) {
 			$rawString = $this->extract();
-			$rawString = preg_replace_callback('/\\\\u([0-9a-f]{4})/i', 'unescape_unicode', $rawString);
-			$rawString = preg_replace_callback('/\\\\!/', 'unescape_gwt_separator', $rawString);
+			$rawString = preg_replace_callback("/\\\\u([0-9a-f]{4})/i", 'unescape_unicode', $rawString);
+			$rawString = preg_replace_callback('#\\\\.#', 'unescape_gwt', $rawString);
 			$this->stringTable [$typeNameIndex] = $rawString;
 		}
 	}

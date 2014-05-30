@@ -37,6 +37,7 @@ require_once(GWTPHP_DIR.'/lang/MappedClass.class.php');
 require_once(GWTPHP_DIR.'/rpc/impl/LegacySerializationPolicy.class.php');
 require_once(GWTPHP_DIR.'/rpc/RPCRequest.class.php');
 
+require_once(GWTPHP_DIR.'/maps/java/lang/Object.class.php');
 
 class RPC {
 
@@ -480,7 +481,7 @@ class RPC {
              * Returns a string that encodes the results of an RPC call. Private overload
              * that takes a flag signaling the preamble of the response payload.
              *
-             * @param Objcet $object the object that we wish to send back to the client
+             * @param Object $object the object that we wish to send back to the client
              * @param boolean $wasThrown if true, the object being returned was an exception thrown
              *          by the service method; if false, it was the result of the service
              *          method's invocation

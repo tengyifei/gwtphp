@@ -131,13 +131,6 @@ class FolderMappedClassLoader extends AbstractMappedClassLoader {
 	public function findMappedClassByReflectionClass(ReflectionClass $reflectionClass) {
 		$classMapFileName = $this->convertClassFileNameToMapFileName($reflectionClass->getFileName());
 		
-		// redirect exceptions definitions
-		/*$classMapFileName = str_replace('\\', '/', $classMapFileName);
-		$exceptionsDir = str_replace('\\', '/', realpath(GWTPHP_DIR.'/exceptions'));
-		if (strncmp($classMapFileName, $exceptionsDir, strlen($exceptionsDir))==0){
-			$classMapFileName = str_replace($exceptionsDir, GWTPHP_DIR.'/maps/java/lang', $classMapFileName);
-		}*/
-		
 		$this->logger->debug("Load class map file: ".$classMapFileName);
 		if (file_exists($classMapFileName)) {
 			$gwtphpmap = $this->getClassMapLoader()->findGWTPHPMapInFile($classMapFileName);
@@ -145,7 +138,7 @@ class FolderMappedClassLoader extends AbstractMappedClassLoader {
 			if (isset($gwtphpmap['className'])) {
 				//return $this->classMapToMappedClass($innermap);
 				return $this->loadMappedClass($gwtphpmap['className']);
-			} else if (is_array($gwtphpmap)) { 
+			} else if (is_array($gwtphpmap)) {
 				foreach ($gwtphpmap as $innermap) {
 					//&& $reflectionClass->getFileName() == ""
 					//$varib =  $this->getClassLoader()->getClassSimpleName($innermap['mappedBy']) ;
@@ -189,6 +182,8 @@ class FolderMappedClassLoader extends AbstractMappedClassLoader {
 	 */
 	private function findMappedClass($className,$cachable = true) {
 		
+		$this->logger->debug("Find mapped class: ".$className);
+		
 		$classMap = $this->getClassMapLoader()->loadClassMap($className);		
 		if (null !== $classMap && is_array($classMap)) {
 			$searchedClassName = JavaSignatureUtil::innecJavaClassNameToPHPClassName($className);
@@ -225,6 +220,9 @@ class FolderMappedClassLoader extends AbstractMappedClassLoader {
 					$_class->setMappedName($className);
 				if (isset($classMap['isInterface']) && $classMap['isInterface'] == 'true') {					
 					$_class->setInterface(true);
+				}
+				if (isset($classMap['isAbstract']) && $classMap['isAbstract'] == 'true') {					
+					$_class->setAbstract(true);
 				}
 				//$_class->setPHPClass($this->classLoader->loadClass($classMap['mappedBy']));
 				$_methods = array();
@@ -360,23 +358,6 @@ class FolderMappedClassLoader extends AbstractMappedClassLoader {
 			require_once(GWTPHP_DIR.'/maps/java/lang/SignatureParseException.class.php');
 			throw new SignatureParseException("Signature for not primitive or array type: ".$signature);
 		}
-	}
-	
-	/**
-	 * Enter description here...
-	 *
-	 * @param string $className
-	 * @return SimpleMappedClass
-	 */
-	private function getNative($className) {	
-		if (JavaSignatureUtil::isNative($className)) {
-		$class = new SimpleMappedClass();
-		$class->setClassLoader($this->getClassLoader());
-		$class->setSignature($className);
-		$class->setCRC(JavaSignatureUtil::getSerializationSignatureForNative($className));
-		return $class;
-		}
-		else return null;
 	}
 	
 	/**

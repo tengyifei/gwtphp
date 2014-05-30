@@ -51,6 +51,8 @@ class SimpleMappedClass implements MappedClass {
 	 */
 	private $interface = false;
 	
+	private $isabstract = false;
+	
 	/**
 	 * is array flag
 	 * @var boolean
@@ -259,7 +261,7 @@ class SimpleMappedClass implements MappedClass {
 			$methodRet = $this->getSuperclass()->getDeclaredMethod( $methodName, $parameterTypes);
 		}
 		if ($methodRet === null) {
-			require_once(GWTPHP_DIR.'/exceptions/NoSuchMethodException.class.php');
+			require_once(GWTPHP_DIR.'/maps/java/lang/NoSuchMethodException.class.php');
 			throw new NoSuchMethodException($methodName);
 		}
 		return $methodRet;
@@ -523,8 +525,22 @@ class SimpleMappedClass implements MappedClass {
 	/**
 	 * @return boolean
 	 */
+	public function isAbstract() {
+		return $this->isabstract;
+	}
+	
+	/**
+	 * @return void
+	 */
 	public function setInterface($flag) {
 		$this->interface = ($flag === true);
+	}
+	
+	/**
+	 * @return void
+	 */
+	public function setAbstract($flag) {
+		$this->isabstract = ($flag === true);
 	}
 		
 }

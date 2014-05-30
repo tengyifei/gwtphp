@@ -318,21 +318,6 @@ class ArrayMappedClassLoader extends AbstractMappedClassLoader {
 	}
 	
 	/**
-	 * Enter description here...
-	 *
-	 * @param string $className
-	 * @return SimpleMappedClass
-	 */
-	private function getNative($className) {	
-		if (JavaSignatureUtil::isNative($className)) {
-		$class = new SimpleMappedClass();
-		$class->setClassLoader($this->getClassLoader());
-		$class->setSignature($className);
-		return $class;
-		}
-		else return null;
-	}
-	/**
 	 * returns default class loader (used by getClassLoader if class loader is null)
 	 * @return ClassLoader
 	 */

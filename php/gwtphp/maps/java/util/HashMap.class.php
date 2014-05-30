@@ -40,7 +40,7 @@ class HashMap {
 	public function toArray() {
 		$arr = array();
 		foreach ($this->keyObjects as $key){
-			$arr[$key->stringValue()] = $this->keys[$key->hashCode()]->stringValue();
+			$arr[$key->stringValue()] = $this->keys[$key->hashCode()];
 		}
 		return $arr;
 	}

@@ -106,6 +106,8 @@ public class PHPRPCLinker extends AbstractLinker {
 		src.println("'className' => '%s',", object.getClassName());
 		src.println("'mappedBy' => '%s',", object.getClassName());
 		src.println("'typeCRC' => '%s',", object.getTypeCRC());
+		if (object.isInterface) src.println("'isInterface' => 'true',");
+		if (object.isAbstract) src.println("'isAbstract' => 'true',");
 		
 		src.println("'fields' => array (");
 		src.indent();

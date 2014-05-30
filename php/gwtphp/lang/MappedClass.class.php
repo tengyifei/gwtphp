@@ -67,10 +67,14 @@ interface MappedClass {
 	 */
 	public function isInterface();
 	
+	public function isAbstract();
+	
 	/**
 	 * @return boolean
 	 */
 	public function setInterface($flag);
+	
+	public function setAbstract($flag);
 	
 	/**
 	 * @return boolean

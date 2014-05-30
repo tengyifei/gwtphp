@@ -23,13 +23,16 @@
  * the License.
  */
 
-require_once "Object.class.php";
-
 /**
  * @package gwtphp.maps.java.lang
  */
 
 class Long extends Object {
+	
+	private $value;
+	public function getValue(){
+		return $this->value;
+	}
 
 	public function __construct($value = null) {
 		if ( strval(intval($value)) == strval($value)) 

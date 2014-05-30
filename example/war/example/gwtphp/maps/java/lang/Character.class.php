@@ -22,12 +22,16 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-require_once "Object.class.php";
 
 /**
  * @package gwtphp.maps.java.lang
  */
 class Character extends Object {
+	
+	private $value;
+	public function getValue(){
+		return $this->value;
+	}
 
 	public function __construct($value = null) {
 		$this->value = (int)$value;

@@ -29,18 +29,23 @@ public abstract class RPCElement extends Artifact<RPCElement> {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	protected RPCElement(String className, String simpleClassName, String parentClassName) {
+	protected RPCElement(String className, String simpleClassName, String parentClassName,
+			Boolean isInterface, Boolean isAbstract) {
 		super(PHPRPCLinker.class);
 		this.className = className;
 		this.classDirName = className.replace('.', '/');
 		this.simpleClassName = simpleClassName;
 		this.parentClassName = parentClassName;
+		this.isInterface = isInterface;
+		this.isAbstract = isAbstract;
 	}
 
 	protected final String className;
 	protected final String classDirName;
 	protected final String simpleClassName;
 	protected final String parentClassName;
+	protected final Boolean isInterface;
+	protected final Boolean isAbstract;
 	
 	@Override
 	public int hashCode() {

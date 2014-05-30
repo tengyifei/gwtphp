@@ -23,11 +23,11 @@
  * the License.
  */
 
-class Object {
-	protected $value;
+abstract class Object{
+	abstract protected function getValue();
 	
 	public function hashCode(){
-		return get_class($this) . '|' . strval($this->value);
+		return get_class($this) . '|' . strval($this->getValue());
 	}
 }
 ?>

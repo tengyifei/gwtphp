@@ -160,9 +160,13 @@ class ServerSerializationStreamWriter extends AbstractSerializationStreamWriter 
 	 * @throws SerializationException
 	 */
 	public function serializeValue($value, MappedClass $type = null) {
-		if ($type === null) {
-			$type = GWTPHPContext::getInstance()->getMappedClassLoader()->findMappedClassByObject($value);
-		} 
+		$type = $this->rectifyType($instance, $type);
+		
+		$logger = LoggerManager::getLogger('gwtphp.rpc.RPC');
+		if (gettype($value)==="object")
+			$logger->debug("ImplSerialize object: " . get_class($value));
+		else
+			$logger->debug("ImplSerialize " . gettype($value) . ": " . (string)$value);
 		
 		switch ($type->getSignature()) {
 			case TypeSignatures::$BOOLEAN:
@@ -441,7 +445,7 @@ class ServerSerializationStreamWriter extends AbstractSerializationStreamWriter 
 			*/
 		} catch (ClassNotFoundException $e) {			
   	  		require_once(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
-			throw new SerializationException($e);
+			throw new SerializationException($e->getMessage());
 		}
 	}
 	
@@ -476,8 +480,7 @@ class ServerSerializationStreamWriter extends AbstractSerializationStreamWriter 
 	private function serializeClass( $instance, MappedClass $instanceClass)
 	{
 		assert ($instance != null);
-		/*MappedField[]*///deletd $declFields = $instanceClass->getDeclaredFields();
-		/*MappedField[]*/ $serializableFields = SerializabilityUtil::applyFieldSerializationPolicy($instanceClass);
+		$serializableFields = SerializabilityUtil::applyFieldSerializationPolicy($instanceClass);
 
 		foreach ($serializableFields as $declField) {
 			assert ($declField != null);
@@ -515,7 +518,7 @@ class ServerSerializationStreamWriter extends AbstractSerializationStreamWriter 
 				}
 			}
 
-			$this->serializeValue($value,$declField->getType());
+			$this->serializeValue($value, $declField->getType());
 
 		}
 

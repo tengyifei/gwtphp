@@ -55,7 +55,6 @@ class JavaSignatureUtil {
 		'java.util.Set' => '83212643',
 		'java.util.HashSet' => '1594477813',
 		'java.util.Vector' => '3125574444'
-
 	);
 	/**
 	 * 

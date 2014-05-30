@@ -114,6 +114,23 @@ abstract class AbstractMappedClassLoader implements MappedClassLoader {
 		$this->classMapLoader = $classMapLoader;
 	}
 	
+	/**
+	 * Enter description here...
+	 *
+	 * @param string $className
+	 * @return SimpleMappedClass
+	 */
+	public function getNative($className) {	
+		if (JavaSignatureUtil::isNative($className)) {
+			$class = new SimpleMappedClass();
+			$class->setClassLoader($this->getClassLoader());
+			$class->setSignature($className);
+			$class->setCRC(JavaSignatureUtil::getSerializationSignatureForNative($className));
+			return $class;
+		}
+		else return null;
+	}
+	
 	/** 
 	 *
 	 * @return ClassMapLoader

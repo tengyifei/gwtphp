@@ -32,8 +32,9 @@ public class RPCObjectArtifact extends RPCElement {
 	private final String typeCRC;
 	private final Map<String, RPCField> fields = new HashMap<String, RPCField>();
 
-	public RPCObjectArtifact(String className, String simpleClassName, String parentClassName, String typeCRC) {
-		super(className, simpleClassName, parentClassName);
+	public RPCObjectArtifact(String className, String simpleClassName, String parentClassName,
+			Boolean isInterface, Boolean isAbstract, String typeCRC) {
+		super(className, simpleClassName, parentClassName, isInterface, isAbstract);
 		this.typeCRC = typeCRC;
 	}
 

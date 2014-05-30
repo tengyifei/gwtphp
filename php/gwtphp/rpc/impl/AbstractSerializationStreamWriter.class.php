@@ -131,24 +131,21 @@ abstract class AbstractSerializationStreamWriter extends AbstractSerializationSt
 		
 		$this->saveIndexForObject ( $instance );
 		
+		$logger = LoggerManager::getLogger('gwtphp.rpc.RPC');
+		if (gettype($instance)==="object")
+			$logger->debug("Serialize object: " . get_class($instance));
+		else
+			$logger->debug("Serialize " . gettype($instance) . ": " . (string)$instance);
+		
 		// Serialize the type signature
 		/*String*/
 		// $typeSignature = $this->getObjectTypeSignature($instance);
 		// TODO: implement calculation of signature
 		
 		// jesli $type->isInterface() to oznacza to ze prawdopodobnie mamy do czynienia z sytuacja w ktorej
-			// return type to interface a zwracany typ jest implementacja tego interfacu
-			
-		if ($type === null || $type->isInterface()) {
-			$_type = GWTPHPContext::getInstance ()->getMappedClassLoader ()->findMappedClassByObject ( $instance );
-			//if ($type->isInterface()) {				
-//				if (!$_type->getReflectionClass()->implementsInterface($type->getSimpleMappedName())) {
-//					throw new Exception("Expected that".$_type->getName()." implements ".$type->getName()." (generic return type?) ");
-//				}
-			//}
-			$type = $_type;
-			unset($_type);
-		}
+		// return type to interface a zwracany typ jest implementacja tego interfacu
+		
+		$type = $this->rectifyType($instance, $type);
 		
 		$typeSignature = $type->getSignature () . '/' . $type->getCRC ();
 		//$typeSignature = 'java.lang.Integer/3438268394';//$type->getCRC();
@@ -156,6 +153,55 @@ abstract class AbstractSerializationStreamWriter extends AbstractSerializationSt
 		// Now serialize the rest of the object
 		$this->serialize ( $instance, $typeSignature, $type );
 	
+	}
+	
+	public function rectifyType($instance, $type){
+		if ($type === null || $type->isInterface() || $type->isAbstract() ||
+		// if given type is not equal to expected (probably sub-class?), find the correct type here.
+		(gettype($instance)==="object" && $type->getSimpleMappedName()!=get_class($instance))) {
+			$_type = GWTPHPContext::getInstance()->getMappedClassLoader()->findMappedClassByObject( $instance );
+			if ($type->getMappedName()!="java.lang.Object"){
+				//ensure class compatibility, all objects are assumed to extend "java.lang.Object"
+				$compatible = false;
+				$class = $_type;
+				$super = $type->getMappedName();
+				while (($class = $class->getSuperclass())!=NULL){
+					if ($class->getMappedName()===$super){
+						$compatible = true;
+						break;
+					}
+				}
+				unset($class);
+				unset($super);
+				if (!$compatible) {
+					require_once(GWTPHP_DIR.
+					'/maps/com/google/gwt/user/client/rpc/SerializableException.class.php');
+					throw new SerializableException("Cannot serialize type: " . $_type);
+				}
+			}
+			//if ($type->isInterface()) {				
+//				if (!$_type->getReflectionClass()->implementsInterface($type->getSimpleMappedName())) {
+//					throw new Exception("Expected that".$_type->getName()." implements ".$type->getName()." (generic return type?) ");
+//				}
+			//}
+			$type = $_type;
+			unset($_type);
+		}else{
+			$loader = GWTPHPContext::getInstance()->getMappedClassLoader();
+			switch(gettype($instance)){
+				case "string":
+				return $loader->getNative("java.lang.String");
+				case "boolean":
+				return $loader->getNative("java.lang.Boolean");
+				case "double":
+				return $loader->getNative("java.lang.Double");
+				case "integer":
+				return $loader->getNative("java.lang.Integer");
+				default:
+				return $type;
+			}
+		}
+		return $type;
 	}
 	
 	/**
