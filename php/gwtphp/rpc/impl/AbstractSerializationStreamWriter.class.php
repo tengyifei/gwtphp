@@ -160,7 +160,7 @@ abstract class AbstractSerializationStreamWriter extends AbstractSerializationSt
 		// if given type is not equal to expected (probably sub-class?), find the correct type here.
 		(gettype($instance)==="object" && $type->getSimpleMappedName()!=get_class($instance))) {
 			$_type = GWTPHPContext::getInstance()->getMappedClassLoader()->findMappedClassByObject( $instance );
-			if ($type->getMappedName()!="java.lang.Object"){
+			if ($type != NULL && $type->getMappedName()!="java.lang.Object"){
 				//ensure class compatibility, all objects are assumed to extend "java.lang.Object"
 				$compatible = false;
 				$class = $_type;
@@ -176,7 +176,7 @@ abstract class AbstractSerializationStreamWriter extends AbstractSerializationSt
 				if (!$compatible) {
 					require_once(GWTPHP_DIR.
 					'/maps/com/google/gwt/user/client/rpc/SerializableException.class.php');
-					throw new SerializableException("Cannot serialize type: " . $_type);
+					throw new SerializableException("Cannot serialize type: " . $_type->getMappedName());
 				}
 			}
 			//if ($type->isInterface()) {				

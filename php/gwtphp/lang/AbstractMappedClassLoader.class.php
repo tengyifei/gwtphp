@@ -125,6 +125,7 @@ abstract class AbstractMappedClassLoader implements MappedClassLoader {
 			$class = new SimpleMappedClass();
 			$class->setClassLoader($this->getClassLoader());
 			$class->setSignature($className);
+			$class->setMappedName($className);
 			$class->setCRC(JavaSignatureUtil::getSerializationSignatureForNative($className));
 			return $class;
 		}

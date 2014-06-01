@@ -51,7 +51,7 @@ class JavaSignatureUtil {
 		'java.util.Date' => '1659716317',
 		'java.util.List' => '536131481',
 		'java.util.Map' => '1900819972',
-		'java.util.HashMap' => '962170901',
+		'java.util.HashMap' => '1797211028',
 		'java.util.Set' => '83212643',
 		'java.util.HashSet' => '1594477813',
 		'java.util.Vector' => '3125574444'
