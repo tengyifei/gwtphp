@@ -135,7 +135,7 @@ abstract class AbstractSerializationStreamWriter extends AbstractSerializationSt
 		if (gettype($instance)==="object")
 			$logger->debug("Serialize object: " . get_class($instance));
 		else
-			$logger->debug("Serialize " . gettype($instance) . ": " . (string)$instance);
+			$logger->debug("Serialize " . gettype($instance));
 		
 		// Serialize the type signature
 		/*String*/
