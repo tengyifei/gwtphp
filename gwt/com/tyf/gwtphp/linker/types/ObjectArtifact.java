@@ -18,36 +18,36 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.tyf.gwtphp.linker;
+package com.tyf.gwtphp.linker.types;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class RPCObjectArtifact extends RPCElement {
+public class ObjectArtifact extends Element {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private final String typeCRC;
-	private final Map<String, RPCField> fields = new HashMap<String, RPCField>();
+	private final Map<String, Field> fields = new HashMap<String, Field>();
 
-	public RPCObjectArtifact(String className, String simpleClassName, String parentClassName,
-			Boolean isInterface, Boolean isAbstract, String typeCRC) {
-		super(className, simpleClassName, parentClassName, isInterface, isAbstract);
+	public ObjectArtifact(String className, String simpleClassName, String parentClassName,
+			String simpleParentClassName, Boolean isInterface, Boolean isAbstract, String typeCRC) {
+		super(className, simpleClassName, parentClassName, simpleParentClassName, isInterface, isAbstract);
 		this.typeCRC = typeCRC;
 	}
 
-	public void putField(String fieldName, RPCField fieldInfo) {
+	public void putField(String fieldName, Field fieldInfo) {
 		fields.put(fieldName, fieldInfo);
 	}
 
-	public Map<String, RPCField> getFields() {
+	public Map<String, Field> getFields() {
 		return fields;
 	}
 
 	public String getTypeCRC() {
 		return typeCRC;
 	}
-
+	
 }

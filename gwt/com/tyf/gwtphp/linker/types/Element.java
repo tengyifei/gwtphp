@@ -18,24 +18,26 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.tyf.gwtphp.linker;
+package com.tyf.gwtphp.linker.types;
 
 import com.google.gwt.core.ext.linker.Artifact;
+import com.tyf.gwtphp.linker.PHPRPCLinker;
 
-public abstract class RPCElement extends Artifact<RPCElement> {
+public abstract class Element extends Artifact<Element> {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	protected RPCElement(String className, String simpleClassName, String parentClassName,
-			Boolean isInterface, Boolean isAbstract) {
+	protected Element(String className, String simpleClassName, String parentClassName, 
+			String simpleParentClassName, Boolean isInterface, Boolean isAbstract) {
 		super(PHPRPCLinker.class);
 		this.className = className;
 		this.classDirName = className.replace('.', '/');
 		this.simpleClassName = simpleClassName;
 		this.parentClassName = parentClassName;
+		this.simpleParentClassName = simpleParentClassName;
 		this.isInterface = isInterface;
 		this.isAbstract = isAbstract;
 	}
@@ -44,8 +46,9 @@ public abstract class RPCElement extends Artifact<RPCElement> {
 	protected final String classDirName;
 	protected final String simpleClassName;
 	protected final String parentClassName;
-	protected final Boolean isInterface;
-	protected final Boolean isAbstract;
+	protected final String simpleParentClassName;
+	private final Boolean isInterface;
+	private final Boolean isAbstract;
 	
 	@Override
 	public int hashCode() {
@@ -68,13 +71,25 @@ public abstract class RPCElement extends Artifact<RPCElement> {
 		return parentClassName;
 	}
 	
+	public Object getSimpleParentClassName() {
+		return simpleParentClassName;
+	}
+	
 	@Override
-	protected int compareToComparableArtifact(RPCElement o) {
+	protected int compareToComparableArtifact(Element o) {
 		return className.compareTo(o.getClassName());
 	}
 
 	@Override
-	protected Class<RPCElement> getComparableArtifactType() {
-		return RPCElement.class;
+	protected Class<Element> getComparableArtifactType() {
+		return Element.class;
+	}
+
+	public Boolean isInterface() {
+		return isInterface;
+	}
+
+	public Boolean isAbstract() {
+		return isAbstract;
 	}
 }

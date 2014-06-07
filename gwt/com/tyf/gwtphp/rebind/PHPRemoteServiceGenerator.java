@@ -34,10 +34,10 @@ import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.gwt.user.rebind.rpc.ServiceInterfaceProxyGenerator;
-import com.tyf.gwtphp.linker.RPCField;
-import com.tyf.gwtphp.linker.RPCFunction;
-import com.tyf.gwtphp.linker.RPCObjectArtifact;
-import com.tyf.gwtphp.linker.RPCServiceArtifact;
+import com.tyf.gwtphp.linker.types.Field;
+import com.tyf.gwtphp.linker.types.Function;
+import com.tyf.gwtphp.linker.types.ObjectArtifact;
+import com.tyf.gwtphp.linker.types.ServiceArtifact;
 
 public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 
@@ -67,13 +67,16 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 			if (generatedClasses.contains(qualifiedClassName))
 				return super.generateIncrementally(logger, ctx, requestedClass);
 
-			RPCServiceArtifact artifact = new RPCServiceArtifact(
+			JClassType supertype = getSuperType(classType);
+			ServiceArtifact artifact = new ServiceArtifact(
 					classType.getQualifiedSourceName(), classType.getSimpleSourceName(),
-					getSuperTypeName(classType), classType.isInterface()!=null, classType.isAbstract());
+					supertype!=null?supertype.getQualifiedSourceName():null, 
+					supertype!=null?supertype.getSimpleSourceName():null,
+					classType.isInterface()!=null, classType.isAbstract());
 
 			// discover new custom objects, whose information must be known by
 			// the server
-			Set<RPCObjectArtifact> objectArtifacts = new HashSet<RPCObjectArtifact>();
+			Set<ObjectArtifact> objectArtifacts = new HashSet<ObjectArtifact>();
 			Set<JType> discoveredTypes = new HashSet<JType>();
 
 			JMethod[] methods = classType.getMethods();
@@ -101,7 +104,7 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 				// get type signature of the return type
 				String returnTypeCRC = TypeUtil.getCRC(returnType);
 
-				RPCFunction f = new RPCFunction(method.getName(), returnTypeName, returnTypeCRC,
+				Function f = new Function(method.getName(), returnTypeName, returnTypeCRC,
 						params, paramNames, exceptions);
 
 				artifact.putMethod(method.getName(), f);
@@ -112,7 +115,7 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 			}
 
 			ctx.commitArtifact(logger, artifact);
-			for (RPCObjectArtifact a : objectArtifacts) {
+			for (ObjectArtifact a : objectArtifacts) {
 				ctx.commitArtifact(logger, a);
 			}
 		} catch (Exception e) {
@@ -123,31 +126,36 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 		return super.generateIncrementally(logger, ctx, requestedClass);
 	}
 
-	private Collection<? extends RPCObjectArtifact> discoverObjects(JType type)
+	private Collection<? extends ObjectArtifact> discoverObjects(JType type)
 			throws ClassNotFoundException {
-		Set<RPCObjectArtifact> objects = new HashSet<RPCObjectArtifact>();
+		Set<ObjectArtifact> objects = new HashSet<ObjectArtifact>();
 		// reduce time wasted doing duplicate discovery
 		if (customObjectSet.contains(type))
 			return objects;
 
 		if (isCustom(type)) {
 			Set<JType> discoveredTypes = new HashSet<JType>();
-			String parentName = getSuperTypeName(type);
+			JClassType supertype = getSuperType(type);
 			JClassType classType;
-			RPCObjectArtifact object;
+			ObjectArtifact object;
 			if ((classType = type.isClass()) != null) {
-				object = new RPCObjectArtifact(type.getQualifiedSourceName(),
-						type.getSimpleSourceName(), parentName, 
-						classType.isInterface()!=null, classType.isAbstract(), TypeUtil.getCRC(type));
+				object = new ObjectArtifact(type.getQualifiedSourceName(),
+						type.getSimpleSourceName(), 
+						supertype!=null?supertype.getQualifiedSourceName():null,
+						supertype!=null?supertype.getSimpleSourceName():null, 
+						classType.isInterface()!=null, 
+						classType.isAbstract(), TypeUtil.getCRC(type));
 				for (JField f : classType.getFields()) {
 					String fieldName = f.getName();
 					String fieldType = TypeUtil.getPHPRpcTypeName(f.getType(), discoveredTypes);
-					object.putField(fieldName, new RPCField(fieldName, fieldType, 
+					object.putField(fieldName, new Field(fieldName, fieldType, 
 							TypeUtil.toPHPType(f.getType())));
 				}
 			}else{
-				object = new RPCObjectArtifact(type.getQualifiedSourceName(),
-						type.getSimpleSourceName(), parentName, 
+				object = new ObjectArtifact(type.getQualifiedSourceName(),
+						type.getSimpleSourceName(), 
+						supertype!=null?supertype.getQualifiedSourceName():null,
+						supertype!=null?supertype.getSimpleSourceName():null, 
 						false, false, TypeUtil.getCRC(type));
 			}
 			objects.add(object);
@@ -169,14 +177,14 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 		return objects;
 	}
 
-	private String getSuperTypeName(JType type) {
-		JClassType classType1;
-		String parentName = null;
-		if ((classType1 = type.isClass()) != null) {
+	private JClassType getSuperType(JType type) {
+		JClassType classType;
+		JClassType parentName = null;
+		if ((classType = type.isClass()) != null) {
 			JClassType supertype;
-			if ((supertype = classType1.getSuperclass()) != null){
+			if ((supertype = classType.getSuperclass()) != null){
 				if (isCustom(supertype))
-					parentName = supertype.getQualifiedSourceName();
+					parentName = supertype;
 			}
 		}
 		return parentName;

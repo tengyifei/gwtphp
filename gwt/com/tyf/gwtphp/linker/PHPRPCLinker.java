@@ -29,6 +29,10 @@ import com.google.gwt.core.ext.linker.AbstractLinker;
 import com.google.gwt.core.ext.linker.ArtifactSet;
 import com.google.gwt.core.ext.linker.LinkerOrder;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.tyf.gwtphp.linker.types.Field;
+import com.tyf.gwtphp.linker.types.Function;
+import com.tyf.gwtphp.linker.types.ObjectArtifact;
+import com.tyf.gwtphp.linker.types.ServiceArtifact;
 
 @LinkerOrder(LinkerOrder.Order.PRE)
 public class PHPRPCLinker extends AbstractLinker {
@@ -47,17 +51,17 @@ public class PHPRPCLinker extends AbstractLinker {
 		ArtifactSet toReturn = new ArtifactSet(artifacts);
 		logger.log(TreeLogger.INFO, "Generating PHP header files...");
 		
-		for (RPCServiceArtifact service : artifacts.find(RPCServiceArtifact.class)) {
+		for (ServiceArtifact service : artifacts.find(ServiceArtifact.class)) {
 			emitService(logger, toReturn, service);
 		}
-		for (RPCObjectArtifact object : artifacts.find(RPCObjectArtifact.class)) {
+		for (ObjectArtifact object : artifacts.find(ObjectArtifact.class)) {
 			emitObject(logger, toReturn, object);
 		}
 
 		return toReturn;
 	}
 
-	private void emitObject(TreeLogger logger, ArtifactSet toReturn, RPCObjectArtifact object)
+	private void emitObject(TreeLogger logger, ArtifactSet toReturn, ObjectArtifact object)
 			throws UnableToCompleteException {
 		logger.log(TreeLogger.INFO, "Processing "+object.getClassName());
 
@@ -68,25 +72,28 @@ public class PHPRPCLinker extends AbstractLinker {
 				"gwtphp-maps/"+object.getClassDirName() + GWTPHP_CLASS_SUFFIX));
 	}
 
-	private String writeObjectClass(RPCObjectArtifact object) {
+	private String writeObjectClass(ObjectArtifact object) {
 		CustomIndentSourceWriter src = new CustomIndentSourceWriter("\t");
 		
 		src.println("<?php");
-		src.println("class %s implements IsSerializable {", object.getSimpleClassName());
+		src.print("class %s ", object.getSimpleClassName());
+		if (object.getSimpleParentClassName()!=null)
+			src.print("extends %s ", object.getSimpleParentClassName());
+		src.println("implements IsSerializable {");
 		src.indent();
 		
 		Set<String> keys = object.getFields().keySet();
 		for (String key : keys){
-			RPCField f = object.getFields().get(key);
-			// generate PHP reflection data
+			Field f = object.getFields().get(key);
+			// generate PHP documentation
 			src.beginJavaDocComment();
 			src.println();
-			src.println("@var "+f.typePHP);
+			src.println("@var "+f.getTypePHP());
 			src.endJavaDocComment();
 			
 			//write field body
 			//TODO: handle different accessibility
-			src.println("public $%s;", f.name);
+			src.println("public $%s;", f.getName());
 			src.println();
 		}
 		
@@ -96,7 +103,7 @@ public class PHPRPCLinker extends AbstractLinker {
 		return src.toString();
 	}
 
-	private String writeObjectHeader(RPCObjectArtifact object) {
+	private String writeObjectHeader(ObjectArtifact object) {
 		CustomIndentSourceWriter src = new CustomIndentSourceWriter("\t");
 		Set<String> keys = object.getFields().keySet();
 		
@@ -106,8 +113,8 @@ public class PHPRPCLinker extends AbstractLinker {
 		src.println("'className' => '%s',", object.getClassName());
 		src.println("'mappedBy' => '%s',", object.getClassName());
 		src.println("'typeCRC' => '%s',", object.getTypeCRC());
-		if (object.isInterface) src.println("'isInterface' => 'true',");
-		if (object.isAbstract) src.println("'isAbstract' => 'true',");
+		if (object.isInterface()) src.println("'isInterface' => 'true',");
+		if (object.isAbstract()) src.println("'isAbstract' => 'true',");
 		
 		src.println("'fields' => array (");
 		src.indent();
@@ -115,9 +122,9 @@ public class PHPRPCLinker extends AbstractLinker {
 		for (String key : keys){
 			src.println("array(");
 			src.indent();
-			RPCField f = object.getFields().get(key);
-			src.println("'name' => '%s',", f.name);
-			src.println("'type' => '%s',", f.type);
+			Field f = object.getFields().get(key);
+			src.println("'name' => '%s',", f.getName());
+			src.println("'type' => '%s',", f.getType());
 			src.outdent();
 			if (++counter!=keys.size())		//end of individual field element
 				src.println("),");
@@ -135,7 +142,7 @@ public class PHPRPCLinker extends AbstractLinker {
 		return src.toString();
 	}
 
-	private void emitService(TreeLogger logger, ArtifactSet toReturn, RPCServiceArtifact service)
+	private void emitService(TreeLogger logger, ArtifactSet toReturn, ServiceArtifact service)
 			throws UnableToCompleteException {
 		logger.log(TreeLogger.INFO, "Processing "+service.getClassName());
 		
@@ -146,7 +153,7 @@ public class PHPRPCLinker extends AbstractLinker {
 				"gwtphp-maps/"+service.getClassDirName() + GWTPHP_CLASS_SUFFIX));
 	}
 
-	private String writeServiceClass(RPCServiceArtifact service) {
+	private String writeServiceClass(ServiceArtifact service) {
 		Set<String> keys = service.getMethods().keySet();
 		CustomIndentSourceWriter src = new CustomIndentSourceWriter("\t");
 		
@@ -154,13 +161,13 @@ public class PHPRPCLinker extends AbstractLinker {
 		src.println("abstract class %s implements RemoteService {", service.getSimpleClassName());
 		src.indent();
 		for (String key : keys){
-			RPCFunction f = service.getMethods().get(key);
+			Function f = service.getMethods().get(key);
 			src.println();
-			src.print("public abstract function %s(", f.name);
+			src.print("public abstract function %s(", f.getName());
 			//write argument list
-			for (int i=0; i<f.paramNames.length; i++){
+			for (int i=0; i<f.getParamNames().length; i++){
 				if (i!=0) src.print(", ");
-				src.print("$"+f.paramNames[i]);
+				src.print("$"+f.getParamNames()[i]);
 			}
 			src.println(");");		//closes abstract function definition
 		}
@@ -175,7 +182,7 @@ public class PHPRPCLinker extends AbstractLinker {
 	 * @param service
 	 * @return
 	 */
-	private String writeServiceHeader(RPCServiceArtifact service) {
+	private String writeServiceHeader(ServiceArtifact service) {
 		Set<String> keys = service.getMethods().keySet();
 		CustomIndentSourceWriter src = new CustomIndentSourceWriter("\t");
 		
@@ -192,16 +199,16 @@ public class PHPRPCLinker extends AbstractLinker {
 		for (String key : keys){
 			src.println("array(");
 			src.indent();
-			RPCFunction f = service.getMethods().get(key);
-			src.println("'name' => '%s',", f.name);
-			src.println("'mappedName' => '%s',", f.name);
-			src.println("'returnType' => '%s',", f.returnType);
-			src.println("'returnTypeCRC' => '%s',", f.returnTypeCRC);
+			Function f = service.getMethods().get(key);
+			src.println("'name' => '%s',", f.getName());
+			src.println("'mappedName' => '%s',", f.getName());
+			src.println("'returnType' => '%s',", f.getReturnType());
+			src.println("'returnTypeCRC' => '%s',", f.getReturnTypeCRC());
 			src.println("'params' => array(");
-			writeArray(src, f.paramsTypeNames);
+			writeArray(src, f.getParamsTypeNames());
 			src.println(") ,");					//end of params array
 			src.println("'throws' => array(");
-			writeArray(src, f.exceptions);
+			writeArray(src, f.getExceptions());
 			src.println(")");					//end of throws array
 			src.outdent();
 			if (++counter!=keys.size())		//end of individual method element

@@ -18,16 +18,28 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.tyf.gwtphp.linker;
+package com.tyf.gwtphp.linker.types;
 
-public class RPCField {
-	final String name;
-	final String type;
-	final String typePHP;
+public class Field {
+	private final String name;
+	private final String type;
+	private final String typePHP;
 	
-	public RPCField(String name, String type, String typePHP){
+	public Field(String name, String type, String typePHP){
 		this.name = name;
 		this.type = type;
 		this.typePHP = typePHP;
+	}
+
+	public String getTypePHP() {
+		return typePHP;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getType() {
+		return type;
 	}
 }

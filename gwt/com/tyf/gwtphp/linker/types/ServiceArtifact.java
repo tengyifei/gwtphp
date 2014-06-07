@@ -1,5 +1,3 @@
-package com.tyf.gwtphp.linker;
-
 /*
  * GWTPHP is a port to PHP of the GWT RPC package.
  * This framework is based on GWT.
@@ -20,28 +18,30 @@ package com.tyf.gwtphp.linker;
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+package com.tyf.gwtphp.linker.types;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class RPCServiceArtifact extends RPCElement {
+public class ServiceArtifact extends Element {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private final Map<String, RPCFunction> methods = new HashMap<String, RPCFunction>();
+	private final Map<String, Function> methods = new HashMap<String, Function>();
 
-	public RPCServiceArtifact(String className, String simpleClassName, String parentClassName, 
-			Boolean isInterface, Boolean isAbstract) {
-		super(className, simpleClassName, parentClassName, isInterface, isAbstract);
+	public ServiceArtifact(String className, String simpleClassName, String parentClassName,
+			String simpleParentClassName, Boolean isInterface, Boolean isAbstract) {
+		super(className, simpleClassName, parentClassName, simpleParentClassName, isInterface, isAbstract);
 	}
 
-	public void putMethod(String methodName, RPCFunction methodInfo) {
+	public void putMethod(String methodName, Function methodInfo) {
 		methods.put(methodName, methodInfo);
 	}
 
-	public Map<String, RPCFunction> getMethods() {
+	public Map<String, Function> getMethods() {
 		return methods;
 	}
 

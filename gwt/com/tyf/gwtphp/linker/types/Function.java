@@ -18,18 +18,18 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.tyf.gwtphp.linker;
+package com.tyf.gwtphp.linker.types;
 
-public class RPCFunction {
+public class Function {
 
-	final String name;
-	final String returnType;
-	final String returnTypeCRC;
-	final String[] paramsTypeNames;
-	final String[] paramNames;
-	final String[] exceptions;
+	private final String name;
+	private final String returnType;
+	private final String returnTypeCRC;
+	private final String[] paramsTypeNames;
+	private final String[] paramNames;
+	private final String[] exceptions;
 	
-	public RPCFunction(String name, String returnType, String returnTypeCRC, 
+	public Function(String name, String returnType, String returnTypeCRC, 
 			String[] params, String[] paramNames, String[] errors){
 		this.name = name;
 		this.returnType = returnType;
@@ -37,5 +37,29 @@ public class RPCFunction {
 		this.paramNames = paramNames;
 		this.paramsTypeNames = params;
 		this.exceptions = errors;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String[] getParamNames() {
+		return paramNames;
+	}
+
+	public String getReturnType() {
+		return returnType;
+	}
+
+	public String getReturnTypeCRC() {
+		return returnTypeCRC;
+	}
+
+	public String[] getParamsTypeNames() {
+		return paramsTypeNames;
+	}
+
+	public String[] getExceptions() {
+		return exceptions;
 	}
 }

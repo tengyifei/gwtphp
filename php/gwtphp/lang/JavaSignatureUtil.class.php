@@ -48,6 +48,7 @@ class JavaSignatureUtil {
 		'java.lang.Float' => '1718559123',
 		'java.lang.Double' => '858496421',
 		'java.lang.String' => '2004016611',
+		'java.lang.Void' => '2139725816',
 		'java.util.Date' => '1659716317',
 		'java.util.List' => '536131481',
 		'java.util.Map' => '1900819972',
