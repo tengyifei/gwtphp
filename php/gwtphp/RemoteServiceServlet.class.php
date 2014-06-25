@@ -103,9 +103,12 @@ class RemoteServiceServlet implements SerializationPolicyProvider  {
      * (default in the file: logger.output.html), and returns a GENERIC_FAILURE_MSG response with status code
      * 500.
      */
-    public function start() {
+    public function start($test_post_data = NULL) {
         try {
-            $requestPayload = RemoteServiceServlet::readPayloadAsUtf8();
+			if ($test_post_data === NULL)
+				$requestPayload = RemoteServiceServlet::readPayloadAsUtf8();
+			else
+				$requestPayload = $test_post_data;
             	
             // Let subclasses see the serialized request.
             //
@@ -135,9 +138,14 @@ class RemoteServiceServlet implements SerializationPolicyProvider  {
         if(isset($GLOBALS["HTTP_RAW_POST_DATA"]) && $GLOBALS["HTTP_RAW_POST_DATA"] != "") {
             return $GLOBALS["HTTP_RAW_POST_DATA"];
         } else {
-            $this->logger->debug("GWTPHP and this gateway are installed correctly, but you have to connect " .
-							"to this gateway from GWT.",__CLASS__,__METHOD__,__FILE__,__LINE__);
-            throw new Exception("Empty content exception");
+			$postData = file_get_contents("php://input");
+			if (strlen($postData)!==0)
+				return $postData;
+			else{
+				$this->logger->debug("GWTPHP and this gateway are installed correctly, but you have to connect " .
+								"to this gateway from GWT.",__CLASS__,__METHOD__,__FILE__,__LINE__);
+				throw new Exception("Empty content exception");
+			}
         }
     }
 

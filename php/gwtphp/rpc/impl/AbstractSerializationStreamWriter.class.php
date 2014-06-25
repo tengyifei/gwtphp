@@ -190,15 +190,18 @@ abstract class AbstractSerializationStreamWriter extends AbstractSerializationSt
 			$loader = GWTPHPContext::getInstance()->getMappedClassLoader();
 			switch(gettype($instance)){
 				case "string":
-				return $loader->getNative("java.lang.String");
+					return $loader->getNative("java.lang.String");
 				case "boolean":
-				return $loader->getNative("java.lang.Boolean");
+					return $loader->getNative("java.lang.Boolean");
 				case "double":
-				return $loader->getNative("java.lang.Double");
+					return $loader->getNative("java.lang.Double");
 				case "integer":
-				return $loader->getNative("java.lang.Integer");
+					if ($type->getSignature() === "java.lang.Long")
+						return $loader->getNative("java.lang.Long");
+					else
+						return $loader->getNative("java.lang.Integer");
 				default:
-				return $type;
+					return $type;
 			}
 		}
 		return $type;
