@@ -20,9 +20,7 @@ function processRequest($input){
 
 	$servlet->setMappedClassLoader($mappedClassLoader);
 	
-	ob_start();
-	$servlet->start($input);
-	$ret = ob_get_contents();
-	ob_end_clean();
+	$ret = $servlet->start($input);
+	
 	return $ret;
 }

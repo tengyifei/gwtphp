@@ -3,9 +3,6 @@
 class RPCTest extends \PHPUnit_Framework_TestCase
 {
 
-	/**
-     * @runInSeparateProcess
-     */
     public function testAddTwoLong()
     {
         $post = 
@@ -20,9 +17,6 @@ EOD;
 		$this->assertEquals($expected, processRequest($post));
     }
 	
-	/**
-     * @runInSeparateProcess
-     */
     public function testPassString()
     {
 		$randStr = base64_encode(sha1(strval(time())));
@@ -38,9 +32,6 @@ EOT;
 		$this->assertEquals($expected, processRequest($post));
     }
 	
-	/**
-     * @runInSeparateProcess
-     */
     public function testReturnException()
     {
         $post = 

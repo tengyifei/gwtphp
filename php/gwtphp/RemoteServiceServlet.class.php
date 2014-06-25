@@ -128,7 +128,10 @@ class RemoteServiceServlet implements SerializationPolicyProvider  {
             $this->onAfterResponseSerialized($responsePayload);
             // Write the response.
             //
-            $this->writeResponse($responsePayload);
+            if ($test_post_data === NULL)
+				$this->writeResponse($responsePayload);
+			else
+				return $responsePayload;
         } catch (Exception $ex) {
             $this->doUnexpectedFailure($ex);
         }
