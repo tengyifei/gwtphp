@@ -1,4 +1,4 @@
-GWTPHP RPC
+# GWTPHP RPC [![Build Status](https://travis-ci.org/tengyifei/gwtphp.svg?branch=master)](https://travis-ci.org/tengyifei/gwtphp)
 ======
 
 Demo: http://goo.gl/2vMteQ
