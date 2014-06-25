@@ -379,7 +379,7 @@ class RPC {
                 /*MappedClass*/
                 $methodReturnType = $serviceMethod->getReturnType();
                 if ($methodReturnType != '' && $object !== null) {
-                    $actualReturnType;
+                    //$actualReturnType;
                     if ( $methodReturnType->isPrimitive()) {
                         //$actualReturnType = RPC::getPrimitiveClassFromWrapper(object.getClass());
                     } else {

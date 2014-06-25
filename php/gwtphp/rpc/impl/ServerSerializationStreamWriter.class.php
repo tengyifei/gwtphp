@@ -160,13 +160,13 @@ class ServerSerializationStreamWriter extends AbstractSerializationStreamWriter 
 	 * @throws SerializationException
 	 */
 	public function serializeValue($value, MappedClass $type = null) {
-		$type = $this->rectifyType($value, $type);
+		if (!$type->isPrimitive()) $type = $this->rectifyType($value, $type);
 		
 		$logger = LoggerManager::getLogger('gwtphp.rpc.RPC');
 		if (gettype($value)==="object")
 			$logger->debug("ImplSerialize object: " . get_class($value));
 		else
-			$logger->debug("ImplSerialize " . gettype($value));
+			$logger->debug("ImplSerialize " . gettype($value) . ", " . $type->getSignature());
 		
 		switch ($type->getSignature()) {
 			case TypeSignatures::$BOOLEAN:
