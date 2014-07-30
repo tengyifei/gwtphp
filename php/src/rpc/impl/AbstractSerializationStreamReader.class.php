@@ -46,7 +46,7 @@ implements SerializationStreamReader {
 	 * @param string $encoded
 	 * @return void
 	 */
-	public function prepareToRead() {
+	public function prepareToRead($encodedTocens = null) {
 		$this->seenArray = array();
 		$this->setVersion($this->readInt()); // Read the stream version number
 		$this->setFlags($this->readInt()); // Read the flags from the stream
