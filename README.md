@@ -5,6 +5,15 @@ Demo: http://goo.gl/2vMteQ
 Huge credits go to Rafal M.Malinowski, the author of the original GWTPHP library for GWT 1.5. His project site: https://code.google.com/p/gwtphp/
 The project is dead for many years now, but I thought it was a nice idea and hope to resuscitate it by bringing it to GitHub and incorporating the latest features.
 
+## Composer ##
+GWTPHP supports [loading from Composer](https://packagist.org/packages/gwtphp/gwtphp) now (which is highly recommended). Please add the following `require` section to your composer.json
+```
+"require": {
+    "gwtphp/gwtphp": "1.0.0"
+}
+```
+After which the relevant library files can be loaded via `require_once "vendor/autoload.php";`. The stock RPC gateways are already configured to work with Composer.
+
 ## Introduction ##
 This library gives PHP sites the capability to interface with GWT code via Remote Procedure Call. It aims to be as identical as possible to the original RPC protocol in GWT. No change of source code is needed on the GWT side, and minimal effort is required to configure PHP.
 
