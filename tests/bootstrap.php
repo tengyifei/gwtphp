@@ -1,7 +1,6 @@
 <?php
-define('ROOT_DIR',dirname(__FILE__) . "/../php");
+require_once dirname(__FILE__) . "/../vendor/autoload.php";
 
-require ROOT_DIR . '/vendor/autoload.php';
 Logger::configure(array(
     'rootLogger' => array(
         'appenders' => array('default'),
