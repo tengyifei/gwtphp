@@ -180,7 +180,7 @@ final class ServerSerializationStreamReader extends AbstractSerializationStreamR
 		$this->logger = Logger::getLogger ( 'gwtphp.rpc.impl.ServerSerializationStreamReader' );
 	}
 	
-	public function prepareToRead($encodedTocens) {
+	public function prepareToRead($encodedTocens = null) {
 		$this->tokenList = array ();
 		$this->tokenListIndex = 0;
 		$this->stringTable = null;
