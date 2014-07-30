@@ -25,7 +25,6 @@
 /**
  * @package gwtphp.lang
  */
-require_once(GWTPHP_DIR.'/lang/TypeSignatures.class.php');
 
 define('INNER_JAVA_CLASS_SEPARATOR','$');
 define('INNER_PHP_CLASS_SEPARATOR','___');
