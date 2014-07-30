@@ -1,10 +1,31 @@
 <?php
 define('ROOT_DIR',dirname(__FILE__) . "/../php");
-define('GWTPHP_DIR',ROOT_DIR.'/gwtphp');
-define('LOG4PHP_DIR',ROOT_DIR.'/log4php');
-define('LOG4PHP_CONFIGURATION', ROOT_DIR.'/log4php.xml');
 
-require_once(LOG4PHP_DIR . '/LoggerManager.php');
+require ROOT_DIR . '/vendor/autoload.php';
+Logger::configure(array(
+    'rootLogger' => array(
+        'appenders' => array('default'),
+    ),
+    'appenders' => array(
+        'default' => array(
+            'class' => 'LoggerAppenderNull',
+        ),
+		// uncomment to enable logging
+        /*'default' => array(
+            'class' => 'LoggerAppenderFile',
+            'layout' => array(
+                'class' => 'LoggerLayoutHtml'
+            ),
+            'params' => array(
+            	'file' => 'log.html',
+            	'append' => true
+            )
+        ),*/
+    )
+));
+
+define('GWTPHP_DIR',ROOT_DIR.'/gwtphp');
+
 require_once(GWTPHP_DIR.'/RemoteServiceServlet.class.php');
 require_once(GWTPHP_DIR.'/lang/SimpleClassLoader.class.php');
 require_once(GWTPHP_DIR.'/lang/ArrayMappedClassLoader.class.php');

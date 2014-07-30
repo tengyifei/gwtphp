@@ -35,10 +35,7 @@ require_once(GWTPHP_DIR.'/maps/com/google/gwt/user/client/rpc/SerializableExcept
 
 require_once(GWTPHP_DIR.'/rpc/SerializationPolicyProvider.class.php');
 
-require_once(LOG4PHP_DIR .'/LoggerManager.php');
-
 require_once(GWTPHP_DIR.'/helpers/RPCTargetResolverStrategy.class.php');
-//require_once(GWTPHP_DIR.'/helpers/NullRPCTargetResolverStrategy.class.php');
 require_once(GWTPHP_DIR.'/helpers/SimpleRPCTargetResolverStrategy.class.php');
 
 /**
@@ -94,7 +91,7 @@ class RemoteServiceServlet implements SerializationPolicyProvider  {
      */
     function __construct()
     {
-        $this->logger = LoggerManager::getLogger('gwtphp.RemoteServiceServlet');
+        $this->logger = Logger::getLogger('gwtphp.RemoteServiceServlet');
     }
     /**
      *

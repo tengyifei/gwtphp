@@ -67,7 +67,7 @@ abstract class AbstractClassLoader implements ClassLoader {
 			array_unshift($classPaths,$startLookingFrom);
 		}
 		foreach ($classPaths as $classPath) {
-			//LoggerManager::getLogger('AbstractClassLoader')->info('Search for class: '.$classPath);
+			//Logger::getLogger('AbstractClassLoader')->info('Search for class: '.$classPath);
 			//echo $classPath . "\n";
 			if (file_exists($classPath)) {
 				require_once($classPath);

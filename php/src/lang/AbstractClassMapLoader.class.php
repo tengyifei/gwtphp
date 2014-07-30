@@ -73,7 +73,7 @@ abstract class AbstractClassMapLoader implements ClassMapLoader {
             array_unshift($classMapPaths,$startLookingFrom);
         }
         foreach ($classMapPaths as $classMapPath) {
-            //LoggerManager::getLogger('AbstractClassLoader')->info('Search for class: '.$classMapPath);
+            //Logger::getLogger('AbstractClassLoader')->info('Search for class: '.$classMapPath);
             if (file_exists($classMapPath)) {
                 return $this->findGWTPHPMapInFile($classMapPath);
                 //return $this->instatineClass($this->getClassSimpleName($className));

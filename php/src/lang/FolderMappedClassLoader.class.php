@@ -47,7 +47,7 @@ class FolderMappedClassLoader extends AbstractMappedClassLoader {
 		$this->setClassLoader( ($classLoader !== null) ? $classLoader : $this->getDefaultClassLoader());
 		$this->setClassMapLoader( ($classMapLoader !== null) ? $classMapLoader : $this->getDefaultClassMapLoader());
 		
-		$this->logger = LoggerManager::getLogger('gwtphp.rpc.RPC');
+		$this->logger = Logger::getLogger('gwtphp.rpc.RPC');
 	}
 		
 	/**

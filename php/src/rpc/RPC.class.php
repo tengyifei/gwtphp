@@ -100,7 +100,7 @@ class RPC {
     //public static function decodeRequest($encodedRequest, RPCResolver $rpcResolver ,SerializationPolicyProvider $serializationPolicyProvider)
     {
 
-        $logger = LoggerManager::getLogger('gwtphp.rpc.RPC');
+        $logger = Logger::getLogger('gwtphp.rpc.RPC');
 
         if ($encodedRequest === null) {
         	require_once(GWTPHP_DIR.'/maps/java/lang/NullPointerException.class.php');

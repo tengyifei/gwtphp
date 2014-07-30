@@ -160,7 +160,7 @@ class ServerSerializationStreamWriter extends AbstractSerializationStreamWriter 
 	 * @throws SerializationException
 	 */
 	public function serializeValue($value, MappedClass $type = null) {
-		$logger = LoggerManager::getLogger('gwtphp.rpc.RPC');
+		$logger = Logger::getLogger('gwtphp.rpc.RPC');
 		if (!$type->isPrimitive()) $type = $this->rectifyType($value, $type);
 		
 		if (gettype($value)==="object")

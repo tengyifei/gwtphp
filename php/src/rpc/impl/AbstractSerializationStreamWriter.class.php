@@ -131,7 +131,7 @@ abstract class AbstractSerializationStreamWriter extends AbstractSerializationSt
 		
 		$this->saveIndexForObject ( $instance );
 		
-		$logger = LoggerManager::getLogger('gwtphp.rpc.RPC');
+		$logger = Logger::getLogger('gwtphp.rpc.RPC');
 		if (gettype($instance)==="object")
 			$logger->debug("Serialize object: " . get_class($instance));
 		else

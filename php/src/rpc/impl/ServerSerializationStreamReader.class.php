@@ -177,7 +177,7 @@ final class ServerSerializationStreamReader extends AbstractSerializationStreamR
 		$this->serializationPolicyProvider = $serializationPolicyProvider;
 		$this->serializationPolicy = RPC::getDefaultSerializationPolicy ();
 		
-		$this->logger = LoggerManager::getLogger ( 'gwtphp.rpc.impl.ServerSerializationStreamReader' );
+		$this->logger = Logger::getLogger ( 'gwtphp.rpc.impl.ServerSerializationStreamReader' );
 	}
 	
 	public function prepareToRead($encodedTocens) {

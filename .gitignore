@@ -2,6 +2,9 @@
 
 dwsync.xml
 _notes/
+vendor
+php/vendor
+composer.lock
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
