@@ -7,4 +7,6 @@ php:
 install:
   - composer require gwtphp/gwtphp:dev-master
 
+before_script: composer update
+
 script: phpunit --bootstrap tests/bootstrap.php tests
