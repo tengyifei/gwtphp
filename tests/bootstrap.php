@@ -24,13 +24,6 @@ Logger::configure(array(
     )
 ));
 
-define('GWTPHP_DIR',ROOT_DIR.'/gwtphp');
-
-require_once(GWTPHP_DIR.'/RemoteServiceServlet.class.php');
-require_once(GWTPHP_DIR.'/lang/SimpleClassLoader.class.php');
-require_once(GWTPHP_DIR.'/lang/ArrayMappedClassLoader.class.php');
-require_once(GWTPHP_DIR.'/lang/TypeSignatures.class.php');
-
 GWTPHPContext::getInstance()->setServicesRootDir(dirname(__FILE__).'/gwtphp-maps');
 GWTPHPContext::getInstance()->setGWTPHPRootDir(GWTPHP_DIR);
 

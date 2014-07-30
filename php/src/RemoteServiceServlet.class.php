@@ -26,6 +26,7 @@
  * @package gwtphp
  */
 
+define('GWTPHP_DIR',dirname(__FILE__));
 
 require_once(GWTPHP_DIR.'/maps/com/google/gwt/user/client/rpc/IsSerializable.class.php');
 require_once(GWTPHP_DIR.'/maps/com/google/gwt/user/client/rpc/RemoteService.class.php');
