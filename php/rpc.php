@@ -1,11 +1,12 @@
 <?php
-require 'vendor/autoload.php';
+require_once dirname(__FILE__) . "/../vendor/autoload.php";
+
 Logger::configure(array(
     'rootLogger' => array(
         'appenders' => array('default'),
     ),
     'appenders' => array(
-		'default' => array(
+        'default' => array(
             'class' => 'LoggerAppenderNull',
         ),
 		// uncomment to enable logging
@@ -22,15 +23,7 @@ Logger::configure(array(
     )
 ));
 
-define('ROOT_DIR',dirname(__FILE__));
-define('GWTPHP_DIR',ROOT_DIR.'/gwtphp');
-
-require_once(GWTPHP_DIR.'/RemoteServiceServlet.class.php');
-require_once(GWTPHP_DIR.'/lang/SimpleClassLoader.class.php');
-require_once(GWTPHP_DIR.'/lang/ArrayMappedClassLoader.class.php');
-require_once(GWTPHP_DIR.'/lang/TypeSignatures.class.php');
-
-GWTPHPContext::getInstance()->setServicesRootDir(ROOT_DIR.'/gwtphp-maps');
+GWTPHPContext::getInstance()->setServicesRootDir(dirname(__FILE__).'/gwtphp-maps');
 GWTPHPContext::getInstance()->setGWTPHPRootDir(GWTPHP_DIR);
 
 $servlet = new RemoteServiceServlet();
