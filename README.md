@@ -113,6 +113,6 @@ Now the site is ready!
 ![Working demo](http://i58.tinypic.com/kcccir.png)
 
 ## Logging ##
-GWTPHP uses Log4PHP for recording debugging messages. By default, all logging switches are turned off. You may enable logging by editing log4php.xml and uncomment the respective configurations.
+GWTPHP uses Log4PHP for recording debugging messages. By default, all logging switches are turned off. You may enable logging by editing logging rpc.php and uncomment the respective configurations.
 
-The log file is located in the same directory as log4php.xml. But these paths may be changed in rpc.php.
+The log file is located in the same directory as rpc.php. But these paths may be changed in rpc.php.
