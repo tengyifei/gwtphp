@@ -6,10 +6,10 @@ Huge credits go to Rafal M.Malinowski, the author of the original GWTPHP library
 The project is dead for many years now, but I thought it was a nice idea and hope to resuscitate it by bringing it to GitHub and incorporating the latest features.
 
 ## Composer ##
-GWTPHP supports [loading from Composer](https://packagist.org/packages/gwtphp/gwtphp) now (which is highly recommended). Please add the following `require` section to your composer.json
+GWTPHP supports [loading from Composer](https://packagist.org/packages/gwtphp/gwtphp) now (which is highly recommended). Please add the following `require` section to your composer.json. You may change the version to whatever newer version you find on the packagist site.
 ```
 "require": {
-    "gwtphp/gwtphp": "1.0.0"
+    "gwtphp/gwtphp": "1.0.1"
 }
 ```
 After which the relevant library files can be loaded via `require_once "vendor/autoload.php";`. The stock RPC gateways are already configured to work with Composer.
