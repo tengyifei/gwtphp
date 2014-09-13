@@ -57,7 +57,7 @@ final class ArrayList_CustomFieldSerializer extends AbstractList_CustomFieldSeri
 	 * @throws SerializationException 
 	 */
 	public static function deserialize(SerializationStreamReader $streamReader,
-	$instance) {
+	$instance, $consuming_type = null, $name = null) {
 parent::deserialize($streamReader,$instance,self::getConsumingType($instance),'ArrayList');
       	
 //		$consuming_type = 0; // ArrayList
@@ -94,7 +94,7 @@ parent::deserialize($streamReader,$instance,self::getConsumingType($instance),'A
  * @throws SerializationException
  */
 	public static function serialize(SerializationStreamWriter $streamWriter,
-	/*ArrayList<Object>*/ $instance, MappedClass $instanceClass)  {
+	/*ArrayList<Object>*/ $instance, MappedClass $instanceClass, $consuming_type = null, $name = null) {
 		
 			parent::serialize($streamWriter,$instance,$instanceClass,self::getConsumingType($instance),'ArrayList');
       	

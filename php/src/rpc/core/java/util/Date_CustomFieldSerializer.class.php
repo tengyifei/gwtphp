@@ -36,6 +36,7 @@ final class Date_CustomFieldSerializer {
   public static function deserialize(SerializationStreamReader $streamReader,
       $instance) {
     // No fields
+    return new Date($instance);
   }
 /**
  * Enter description here...
@@ -49,7 +50,7 @@ final class Date_CustomFieldSerializer {
        {
        	$long = $streamReader->readLong();
        	Logger::getLogger('Date_CustomFieldSerializer')->debug("instantine date".$long);
-    return $long;
+    return new Date($long);
   }
 /**
  * 
@@ -61,7 +62,10 @@ final class Date_CustomFieldSerializer {
  */
   public static function serialize(SerializationStreamWriter $streamWriter,
       $instance, MappedClass $instanceClass)  {
-      	Logger::getLogger('Date_CustomFieldSerializer')->debug("serialize date:".$instance);
+      if ($instance instanceof Date) {
+          $instance = $instance->getTime();
+      }
+      Logger::getLogger('Date_CustomFieldSerializer')->debug("serialize date:".$instance);
     $streamWriter->writeLong($instance);
   }
 }
