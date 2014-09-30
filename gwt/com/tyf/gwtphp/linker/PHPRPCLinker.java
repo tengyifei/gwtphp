@@ -72,6 +72,12 @@ public class PHPRPCLinker extends AbstractLinker {
 				"gwtphp-maps/"+object.getClassDirName() + GWTPHP_CLASS_SUFFIX));
 	}
 
+	/**
+	 * Writes class implementation stubs.
+	 * 
+	 * @param object - information about the type of object
+	 * @return
+	 */
 	private String writeObjectClass(ObjectArtifact object) {
 		CustomIndentSourceWriter src = new CustomIndentSourceWriter("\t");
 		
@@ -91,18 +97,24 @@ public class PHPRPCLinker extends AbstractLinker {
 			src.println("@var "+f.getTypePHP());
 			src.endJavaDocComment();
 			
-			//write field body
+			// write field body
 			//TODO: handle different accessibility
 			src.println("public $%s;", f.getName());
 			src.println();
 		}
 		
 		src.outdent();
-		src.println("}");		//end class definition
+		src.println("}");		// end class definition
 		
 		return src.toString();
 	}
 
+	/**
+	 * Writes type information in an array to be loaded by PHP.
+	 * 
+	 * @param object
+	 * @return
+	 */
 	private String writeObjectHeader(ObjectArtifact object) {
 		CustomIndentSourceWriter src = new CustomIndentSourceWriter("\t");
 		Set<String> keys = object.getFields().keySet();
@@ -126,18 +138,18 @@ public class PHPRPCLinker extends AbstractLinker {
 			src.println("'name' => '%s',", f.getName());
 			src.println("'type' => '%s',", f.getType());
 			src.outdent();
-			if (++counter!=keys.size())		//end of individual field element
+			if (++counter!=keys.size())		// end of individual field element
 				src.println("),");
 			else
 				src.println(")");
 		}
 		src.outdent();
-		src.println("),");		//end of fields array
+		src.println("),");		// end of fields array
 		if (object.getParentClassName()!=null){
 			src.println("'extends' => '%s'", object.getParentClassName());
 		}
 		src.outdent();
-		src.println(");");		//end of object definition
+		src.println(");");		// end of object definition
 		
 		return src.toString();
 	}
@@ -169,10 +181,10 @@ public class PHPRPCLinker extends AbstractLinker {
 				if (i!=0) src.print(", ");
 				src.print("$"+f.getParamNames()[i]);
 			}
-			src.println(");");		//closes abstract function definition
+			src.println(");");		// closes abstract function definition
 		}
 		src.outdent();
-		src.println("}");		//closes class definition
+		src.println("}");		// closes class definition
 		return src.toString();
 	}
 
@@ -206,23 +218,23 @@ public class PHPRPCLinker extends AbstractLinker {
 			src.println("'returnTypeCRC' => '%s',", f.getReturnTypeCRC());
 			src.println("'params' => array(");
 			writeArray(src, f.getParamsTypeNames());
-			src.println(") ,");					//end of params array
+			src.println(") ,");					// end of params array
 			src.println("'throws' => array(");
 			writeArray(src, f.getExceptions());
-			src.println(")");					//end of throws array
+			src.println(")");					// end of throws array
 			src.outdent();
-			if (++counter!=keys.size())		//end of individual method element
+			if (++counter != keys.size())		// end of individual method element
 				src.println("),");
 			else
 				src.println(")");
 		}
 		src.outdent();
-		src.println("),");		//end of methods array
+		src.println("),");		// end of methods array
 		if (service.getParentClassName()!=null){
 			src.println("'extends' => '%s'", service.getParentClassName());
 		}
 		src.outdent();
-		src.println(");");		//end of gwtphpmap element
+		src.println(");");		// end of gwtphpmap element
 		
 		return src.toString();
 	}

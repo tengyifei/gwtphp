@@ -169,7 +169,7 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 				}
 			}
 			
-			// recursively discover other custom objects refereced by this object
+			// recursively discover other custom objects referenced by this object
 			for (JType t : discoveredTypes) {
 				objects.addAll(discoverObjects(t));
 			}
@@ -204,6 +204,8 @@ public class PHPRemoteServiceGenerator extends ServiceInterfaceProxyGenerator {
 			return false;
 		if (returnType.getQualifiedSourceName().startsWith("com.google.gwt.user.client.rpc."))
 			return false;
+		// assume other classes are all user-defined i.e. the user need to provide implementation
+		// TODO: be more consistent with the existing implementation of Java classes in PHP side
 		return true;
 	}
 

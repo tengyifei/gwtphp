@@ -142,8 +142,8 @@ private static $sInstance;// =
   	  require_once(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
       throw new SerializationException(
           'Type \''
-              + $mappedClass->getSignature()
-              + '\' did not have a custom field serializer.  For security purposes, this type will not be serialized.');
+              . $mappedClass->getSignature()
+              . '\' did not have a custom field serializer.  For security purposes, this type will not be serialized.');
     }
   	
   }
@@ -161,8 +161,8 @@ private static $sInstance;// =
   	  require_once(GWTPHP_DIR.'/maps/java/lang/SerializationException.class.php');
       throw new SerializationException(
           'Type \''
-              + $mappedClass->getSignature()
-              + '\' did not have a custom field serializer.  For security purposes, this type will not be serialized.');
+              . $mappedClass->getSignature()
+              . '\' did not have a custom field serializer.  For security purposes, this type will not be serialized.');
     }
   	
   }
