@@ -3,13 +3,13 @@
 Demo: http://goo.gl/2vMteQ
 
 Huge credits go to Rafal M.Malinowski, the author of the original GWTPHP library for GWT 1.5. His project site: https://code.google.com/p/gwtphp/
-The project is dead for many years now, but I thought it was a nice idea and hope to resuscitate it by bringing it to GitHub and incorporating the latest features.
+The project was dead for many years now, but I thought it was a nice idea and hope to resuscitate it by bringing it to GitHub and incorporating the latest features.
 
 ## Composer ##
-GWTPHP supports [loading from Composer](https://packagist.org/packages/gwtphp/gwtphp) now (which is highly recommended). Please add the following `require` section to your composer.json. You may change the version to whatever newer version you find on the packagist site.
+GWTPHP supports [loading from Composer](https://packagist.org/packages/gwtphp/gwtphp) now (which is highly recommended). Please add the following `require` section to your composer.json. You may change the version to whatever newer released version you find on the Packagist site, or dev-master for bleedin-edge testing.
 ```
 "require": {
-    "gwtphp/gwtphp": "1.0.1"
+    "gwtphp/gwtphp": "1.0.2"
 }
 ```
 After which the relevant library files can be loaded via `require_once "vendor/autoload.php";`. The stock RPC gateways are already configured to work with Composer.
@@ -35,9 +35,11 @@ The generated class maps are contained in a folder named gwtphp-maps, which can 
 Next, write server-side implementations using the stub classes. The class name of the implementation has to be [class name]Impl. The file containing the implementation needs to be located in the same directory as the stub file, and its file name needs to be [class name]Impl.class.php. This follows the naming conventions of GAE front-end Java servlets.
 
 ## Example ##
+The repository comes with an example almost set up. Simply run `composer install` in the `war/example` directory and you are all set! Below is a rough walk-through.
+
 Suppose we want to convert the GWT example project contained in stock GWT installation, GreetingService, to operate with PHP.
 
-First include the custom linkers into project source, then edit the module XML to add the inherits statement.
+First include the custom linkers into project source, then edit the module XML to add the inherits statement, before doing a compile.
 ```XML
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.5.1//EN"
@@ -57,7 +59,9 @@ First include the custom linkers into project source, then edit the module XML t
   <source path='shared'/>
 </module>
 ```
-The file "rpc.php" (located in folder "php") is the gateway of all RPC POST requests. In the GWT example project, the default RemoteServiceRelativePath is "greet". The two names need to be identical for RPC to function. Since most web servers are configured to only execute .php files as PHP code, we may change both names to a PHP file name e.g. "greet.php".
+After that, write the `composer.json` as shown at the beginning. Place it inside the `war/example` folder and run `composer install` or equivalent. Composer will begin to automatically download all related code and dependencies.
+
+Once the process is finished, you will need to copy `rpc.php`, located in `vendor/gwtphp/gwtphp`, to the `war/example` folder. This file is the gateway of all RPC POST requests. In the GWT example project, the default RemoteServiceRelativePath is "greet". The two names need to be identical for RPC to function. Since most web servers are configured to only execute .php files as PHP code, we may change both names to a PHP file name e.g. "greet.php".
 ```Java
 /**
  * The client side stub for the RPC service.
@@ -67,12 +71,14 @@ public interface GreetingService extends RemoteService {
   String greetServer(String name) throws IllegalArgumentException;
 }
 ```
-Compile the project. The gwtphp-maps folder can be found in war/example. Copy the contents in "php" folder in this repository to the war/example directory as well.
+The gwtphp-maps folder can be found in `war/example`.
 
 Directory structure (as of now):
 ```
 example/
-  gwtphp/
+  vendor/
+    gwtphp/
+	...
   gwtphp-maps/
     com/
       example/
@@ -80,8 +86,6 @@ example/
           client/
             GreetingService.class.php
             GreetingService.gwtphpmap.inc.php
-  log4php/
-  log4php.xml
   greet.php
 WEB-INF/
 Example.html
@@ -108,11 +112,14 @@ class GreetingServiceImpl {
 }
 ?>
 ```
-Now the site is ready!
+Now your site is ready!
 
 ![Working demo](http://i58.tinypic.com/kcccir.png)
 
+## GWT auto-wiping of WAR folder ##
+During each invocation, the GWT Compiler deletes all files residing within the WAR folder. This could be problematic as our implementation is also written inside that folder. One solution is to put `composer.json` and `rpc.php` in the parent directory, and copy the newly generated gwtphp-maps headers manually after compilation.
+
 ## Logging ##
-GWTPHP uses Log4PHP for recording debugging messages. By default, all logging switches are turned off. You may enable logging by editing logging rpc.php and uncomment the respective configurations.
+GWTPHP uses Log4PHP for recording debugging messages. By default, all logging switches are turned off. You may enable logging by editing rpc.php and uncomment the respective configurations.
 
 The log file is located in the same directory as rpc.php. But these paths may be changed in rpc.php.
