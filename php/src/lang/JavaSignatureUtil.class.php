@@ -210,7 +210,25 @@ class JavaSignatureUtil {
 			throw new SignatureParseException("Not an generic signature: " . $signature);
 		}
 
-		$types = explode(',',substr($signature,$lPos+1,$rPos-$lPos-1));
+		//$types = explode(',',substr($signature,$lPos+1,$rPos-$lPos-1));
+		
+		// split string into individual type parameters, handling generics within generics
+		$str = substr($signature,$lPos+1,$rPos-$lPos-1);
+		$numTypes = 0;
+		$types[] = "";
+		$depth = 0;
+		for ($i = 0; $i < strlen($str); $i++) {
+			if ($str[$i] === '<') $depth++;
+			if ($str[$i] === '>') $depth--;
+			// do not process commas within inner generics
+			if ($str[$i] === ',' && $depth === 0) {
+				$numTypes++;
+				$types[] = "";
+			} else {
+				$types[$numTypes] .= $str[$i];
+			}
+		}
+		
 		foreach ($types as $key => $type) {
 			$types[$key] = trim($type);
 		}
