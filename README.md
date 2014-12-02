@@ -9,7 +9,7 @@ The project was dead for many years now, but I thought it was a nice idea and ho
 GWTPHP supports [loading from Composer](https://packagist.org/packages/gwtphp/gwtphp) now (which is highly recommended). Please add the following `require` section to your composer.json. You may change the version to whatever newer released version you find on the Packagist site, or dev-master for bleedin-edge testing.
 ```
 "require": {
-    "gwtphp/gwtphp": "1.0.2"
+    "gwtphp/gwtphp": "1.0.*"
 }
 ```
 After which the relevant library files can be loaded via `require_once "vendor/autoload.php";`. The stock RPC gateways are already configured to work with Composer.
